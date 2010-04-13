@@ -1,0 +1,147 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>pl.railman</groupId>
+  <artifactId>cuda_texas</artifactId>
+  <packaging>jar</packaging>
+  <version>0.0.1</version>
+  <name>cuda_texas</name>
+  <url>http://maven.apache.org</url>
+  
+  
+
+ <pluginRepositories>
+  <pluginRepository>
+    <id>freehep-maven</id>
+    <name>Maven FreeHEP</name>
+    <url>http://java.freehep.org/maven2</url>
+  </pluginRepository>
+ </pluginRepositories>
+
+ <repositories>
+  <repository>
+    <id>freehep-maven</id>
+    <name>Maven FreeHEP</name>
+    <url>http://java.freehep.org/maven2</url>
+  </repository>
+ </repositories>
+
+  
+  
+  <dependencies>
+  
+    <dependency>
+      <groupId>pl.wroc.uni.ii.evolution</groupId>
+      <artifactId>wevo_old</artifactId>
+      <version>0.0.1</version>
+    </dependency>  
+  
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+  
+   <build>
+   
+
+     <resources>
+       <resource>
+         <filtering>true</filtering>
+         <directory>src/main/cuda</directory> <!-- tu bedzie Makefile, ktory robi biblioteke -->
+       </resource>
+     </resources>
+     
+   
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>make-maven-plugin</artifactId>
+          <version>1.0-beta-1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+   
+    <plugins>
+    
+      <!-- kompilator javy -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    
+      <plugin>
+        <groupId>org.freehep</groupId>
+        <artifactId>freehep-swig-plugin</artifactId>
+        <version>1.3.31-1</version>
+        <executions>
+          
+          <!-- translacja pliku ai_texas_swig.i na C i jave -->
+          <execution>
+            <id>1</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <packageName>cuda.swig</packageName>
+              <force>true</force> <!-- bez forced cos nie chce sie odswiezac-->
+              <source>ai_texas_swig.i</source> 
+            </configuration>
+          </execution> 
+          
+          <!-- translacja pliku texas_swig.i na C i jave -->
+          <execution>
+            <id>2</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <packageName>cuda.swig</packageName>
+              <force>true</force> <!-- bez forced cos nie chce sie odswiezac-->
+              <source>texas_swig.i</source> 
+            </configuration>
+          </execution> 
+          
+        </executions>
+      </plugin>
+      
+      
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>make-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <configuration>
+          <destDir>.</destDir>
+        </configuration>
+        <executions>
+          <execution> <!-- tutaj jest robienie biblioteki C, ktora korzysta zucda -->
+            <phase>compile</phase> <!-- wykona sie tuz po skompilowaniu *java -->
+            <goals>
+              <goal>make-install</goal>
+            </goals>
+            <configuration>
+
+            </configuration>
+
+          </execution> 
+        </executions>
+     
+      </plugin>
+    </plugins>
+    
+    
+    
+  </build>
+  
+  
+</project>
