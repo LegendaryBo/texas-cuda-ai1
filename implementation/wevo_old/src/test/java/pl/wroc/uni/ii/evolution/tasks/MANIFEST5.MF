@@ -1,0 +1,1 @@
+TaskCreator: pl.wroc.uni.ii.evolution.tasks.prezentacja

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : package
+    Created on : 2008-08-12, 00:11:59
+    Author     : Mateusz 'm4linka' Malinowski <m4linka at gmail.com>
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>pl.wroc.uni.ii.experimental.masterslave</title>
+    </head>
+    <body>
+        <p>
+            This package contains:
+            <ol>
+              <li>
+                EvDBConnector - class that can comunicate with database.
+              </li>
+              <li>
+                EvPopulationDistributor - interface of population distributor
+                  classes.
+              </li>
+              <li>
+                EvEqualPopulationDistributor - implementation of 
+                  EvPopulationDistributor. Assuming there were n slaves
+                  instance of this class divides population into n
+                  equal subpopulations. Each subpopulation contain approximately
+                  population_size/n individuals.
+              </li>
+              <li>
+                EvPopulationState - wrapper for the population.
+                  It contains population and information whether 
+                  contained population is evaluated or not.
+              </li>
+              <li>
+                EvMaster - master in the master-slave model.
+              </li>
+              <li>
+                EvEvaluator - evaluates population (in distributed
+                manner).
+              </li>
+              <li>
+                EvClientID - contains client's id.
+              </li>
+            </ol>
+        </p>
+    </body>
+</html>

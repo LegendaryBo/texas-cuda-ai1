@@ -1,0 +1,2 @@
+TaskCreator: pl.wroc.uni.ii.evolution.tasks.StockTask
+Class-Path: fdm2.jar eg4eem.jar
