@@ -297,7 +297,7 @@ int liczba_intow, int block_size) {
 		suma += wyniki_host[i];
 		//printf("\nCUDA bilans po grze nr %d",sizeof() );
 		//printf("\n wskaznik: %d", wyniki_host[i]);
-		printf("ma wynik %f ", (suma/N) );
+		//printf("ma wynik %f ", (suma/N) );
 	}
 
 	wynik[0] = suma/N;
