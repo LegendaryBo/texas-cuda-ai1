@@ -1,18 +1,18 @@
 %module ai_texas_swig
 %{
-#include "../../../src/main/java/c/struktury/texas_struktury.h"
-#include "../../../src/main/java/c/struktury/gra.h"
-#include "../../../src/main/java/c/struktury/gracz.h"
-#include "../../../src/main/java/c/struktury/kod_graya.h"
-#include "../../../src/main/java/c/struktury/ile_grac_r1.h"
-#include "../../../src/main/java/c/struktury/stawka_r1.h"
-#include "../../../src/main/java/c/struktury/dobijanie_r1.h"
-#include "../../../src/main/java/c/struktury/czy_grac_r1.h"
-#include "../../../src/main/java/c/struktury/ile_grac_rx.h"
-#include "../../../src/main/java/c/struktury/stawka_rx.h"
-#include "../../../src/main/java/c/struktury/dobijanie_rx.h"
-#include "../../../src/main/java/c/struktury/czy_grac_rx.h"
-#include "../../../src/main/java/c/struktury/reguly.h"
+#include "../../classes/struktury/texas_struktury.h"
+#include "../../classes/struktury/gra.h"
+#include "../../classes/struktury/gracz.h"
+#include "../../classes/struktury/kod_graya.h"
+#include "../../classes/struktury/ile_grac_r1.h"
+#include "../../classes/struktury/stawka_r1.h"
+#include "../../classes/struktury/dobijanie_r1.h"
+#include "../../classes/struktury/czy_grac_r1.h"
+#include "../../classes/struktury/ile_grac_rx.h"
+#include "../../classes/struktury/stawka_rx.h"
+#include "../../classes/struktury/dobijanie_rx.h"
+#include "../../classes/struktury/czy_grac_rx.h"
+#include "../../classes/struktury/reguly.h"
 
 extern void destruktorGra(Gra *gra);
 extern void destruktorInt(int *ptr);

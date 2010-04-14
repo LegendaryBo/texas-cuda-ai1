@@ -1,8 +1,8 @@
 %module texas_swig
 %{
-#include "../../../src/main/java/c/struktury/texas_struktury.h"
-#include "../../../src/main/java/c/struktury/gra.h"
-#include "../../../src/main/java/c/struktury/gracz.h"
+#include "../../classes/struktury/texas_struktury.h"
+#include "../../classes/struktury/gra.h"
+#include "../../classes/struktury/gracz.h"
 
 extern void iloscKartTejSamejWysokosciHOST(Hand *, int *);
 extern Hand *alokujObiekt(int * , int ileKart);
