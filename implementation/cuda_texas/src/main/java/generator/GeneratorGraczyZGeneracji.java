@@ -3,6 +3,8 @@ package generator;
 import java.util.ArrayList;
 import java.util.Random;
 
+import engine.TexasSettings;
+
 import operatory.WywalDuplikaty;
 import pl.wroc.uni.ii.evolution.engine.EvAlgorithm;
 import pl.wroc.uni.ii.evolution.engine.EvPopulation;
@@ -23,7 +25,7 @@ import Gracze.gracz_v3.GeneratorRegulv3;
 
 public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 
-	public final static String SCIEZKA = "/home/railman/texas/";
+	public static String SCIEZKA = null;
 	
 	public ArrayList<EvBinaryVectorIndividual> lista = new ArrayList<EvBinaryVectorIndividual>();
 
@@ -59,6 +61,12 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 
 		if (generacja > 0) {
 			if (uzyjPoprzednichGeneracji) {
+				
+				if (SCIEZKA==null) {
+					SCIEZKA = TexasSettings.class.getClassLoader().getResource(
+							"texas_individuale").getPath();
+				}
+				
 				lista = new ArrayList<EvBinaryVectorIndividual>();
 				for (int i = 1; i <= generacja; i++) {
 //					System.out.println("odczytuje plik "
@@ -66,7 +74,7 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 //							+ ".dat");
 					lista
 							.addAll(IndividualIO
-									.odczytajZPliku(SCIEZKA + "generacja"
+									.odczytajZPliku(SCIEZKA + "/generacja"
 											+ i + ".dat"));
 				}
 			} else {

@@ -50,8 +50,10 @@
 
      <resources>
        <resource>
-         <filtering>true</filtering>
          <directory>src/main/cuda</directory> <!-- tu bedzie Makefile, ktory robi biblioteke -->
+       </resource>
+       <resource>
+         <directory>src/main/resources</directory> <!-- tu bedzie Makefile, ktory robi biblioteke -->
        </resource>
      </resources>
      
@@ -122,6 +124,7 @@
         <version>1.0-beta-1</version>
         <configuration>
           <destDir>.</destDir>
+          <workDir>target/classes</workDir>
         </configuration>
         <executions>
           <execution> <!-- tutaj jest robienie biblioteki C, ktora korzysta zucda -->
