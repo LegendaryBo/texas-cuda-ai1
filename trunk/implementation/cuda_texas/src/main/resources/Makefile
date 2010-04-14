@@ -1,7 +1,7 @@
 
 FLAGS = --device-emulation
 #FLAGS = --device-emulation --ptxas-options=-v -maxrregcount=64 -g -G
-SWIG_C_FILES_DIR = ../../../target/swig/c
+SWIG_C_FILES_DIR = ../swig/c
 CUDA_LIB = -L/usr/local/cuda/lib -lcudart 
 
 JAVA = -I$${JAVA_HOME}/include -I$${JAVA_HOME}/include/linux
@@ -16,5 +16,5 @@ lib: rozgrywka.o
 #	nvcc -shared $(CUDA_LIB) $(FLAGS) $(JAVA) osobnik.o -o libtests_texas.so
 
 rozgrywka.o:
-	nvcc -c $(FLAGS) c/funkcje/rozgrywka.cu
+	nvcc -c $(FLAGS) funkcje/rozgrywka.cu
 
