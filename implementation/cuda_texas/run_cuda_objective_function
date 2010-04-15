@@ -1,0 +1,1 @@
+sudo $JAVA_HOME/bin/java -Xquickstart -classpath target/classes:../wevo_old/target/wevo_old-0.0.1.jar Gracze.gracz_v3.TestIndividuala $1 $2 $3 $4
