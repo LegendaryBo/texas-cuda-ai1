@@ -35,9 +35,9 @@ public class TestIndividuala {
 		
 		if (args.length < 3) {
 			System.out.println("Do uruchomienia testu niezbedne sa 3 parametry:");
-			System.out.println("1) Liczba partii na jedna funkcje celu (int)");
-			System.out.println("2) Liczba watkow na blok w CUDA (int)");
-			System.out.println("3) Liczba obliczen funkcji celu (int)");
+			System.out.println("1) Liczba obliczen funkcji celu (int)");
+			System.out.println("2) Liczba partii na jedna funkcje celu (int)");
+			System.out.println("3) Liczba watkow na blok w CUDA (int)");
 			System.out.println("4) logi (0 lub 1), argument opcjonalny");
 			return;
 		}
