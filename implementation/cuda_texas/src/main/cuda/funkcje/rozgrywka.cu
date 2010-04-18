@@ -272,7 +272,7 @@ int liczba_intow, int block_size) {
 	size_t size_zlecenie = sizeof(Zlecenie)*N;
 	cudaMalloc((void **) &zlecenia_cuda, size_zlecenie);
 
-    	//int sharedMemSize = block_size * sizeof(int) * 10;
+    	int sharedMemSize = block_size * sizeof(int) * 10;
 
         cudaMemcpyToSymbol(osobniki_const, osobniki_statyczna_tablica, liczba_intow*sizeof(int)*101);
 	obsluzBlad("kopiowanie osobnikow na karte");
@@ -284,7 +284,7 @@ int liczba_intow, int block_size) {
 	  nBlocks--;
 
 	obsluzBlad("kopiowanie pozostalych danych na karte");
-	//obliczZlecenie <<< nBlocks, block_size,  sharedMemSize>>> (N, zlecenia_cuda, wyniki_device, liczba_intow, gry_cuda, reguly_cuda);
+	obliczZlecenie <<< nBlocks, block_size,  sharedMemSize>>> (N, zlecenia_cuda, wyniki_device, liczba_intow, gry_cuda, reguly_cuda);
 	cudaThreadSynchronize();
 	obsluzBlad("uruchomienia kernela");
 

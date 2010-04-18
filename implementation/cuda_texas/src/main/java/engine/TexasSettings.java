@@ -1,9 +1,6 @@
 package engine;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.net.URL;
 
 /**
  * Ta klasa laduje ustawienia dla projektui
@@ -18,8 +15,11 @@ public class TexasSettings {
 
 		// oczytujemy sciezke z pliku texas_library_path (powinien on byc w src/main/resources)
 		if (TexasSettings.TEXAS_LIBRARY_PATH==null) {
-				TEXAS_LIBRARY_PATH = 
-					TexasSettings.class.getClassLoader().getResource("libtests_texas.so").getPath();
+			
+				URL biblioteka = TexasSettings.class.getClassLoader().getResource("libtests_texas.so");
+				if (biblioteka==null)
+					throw new IllegalStateException("Blad, nie zlokalizowano pliku libtests_texas.so na classpath ");
+				TEXAS_LIBRARY_PATH = biblioteka.getPath();
 				// ucinamy nazwe pliku, potrzebna jest tylko sciezka
 				TEXAS_LIBRARY_PATH = TEXAS_LIBRARY_PATH.substring(0, TEXAS_LIBRARY_PATH.length()-17);
 
@@ -30,6 +30,7 @@ public class TexasSettings {
 		if (! TEXAS_LIBRARY_PATH.equals(TexasSettings.TEXAS_LIBRARY_PATH) ) {
 			//System.out.println("zaladowalem biblioteke CUDA z AI Texas hol'em");
 			System.setProperty("java.library.path", TexasSettings.TEXAS_LIBRARY_PATH);
+			System.out.println(TexasSettings.TEXAS_LIBRARY_PATH);
 			System.loadLibrary(nazwa_biblioteki);
 		}
 		
