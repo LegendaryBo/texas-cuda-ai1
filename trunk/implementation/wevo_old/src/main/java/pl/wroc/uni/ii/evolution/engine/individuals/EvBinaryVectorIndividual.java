@@ -35,6 +35,10 @@ public class EvBinaryVectorIndividual extends EvKnaryIndividual implements
 		return (boolTab[index / 32] & (1 << index % 32)) >>> index % 32;
 
 	}
+	
+	public int[] getBoolTable() {
+		return boolTab;
+	}
 
 	public int getDimension() {
 		return dimension;
