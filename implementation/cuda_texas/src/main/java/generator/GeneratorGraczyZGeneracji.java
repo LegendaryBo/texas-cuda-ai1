@@ -25,7 +25,7 @@ import Gracze.gracz_v3.GeneratorRegulv3;
 
 public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 
-	public static String SCIEZKA = null;
+	public static String SCIEZKA = TexasSettings.class.getClassLoader().getResource("texas_individuale").getPath();
 	
 	public ArrayList<EvBinaryVectorIndividual> lista = new ArrayList<EvBinaryVectorIndividual>();
 
@@ -57,15 +57,12 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 		}
 	}
 
+	
+	
 	private void odczytajIndividuale() {
 
 		if (generacja > 0) {
 			if (uzyjPoprzednichGeneracji) {
-				
-				if (SCIEZKA==null) {
-					SCIEZKA = TexasSettings.class.getClassLoader().getResource(
-							"texas_individuale").getPath();
-				}
 				
 				lista = new ArrayList<EvBinaryVectorIndividual>();
 				for (int i = 1; i <= generacja; i++) {
@@ -73,9 +70,7 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 //							+ SCIEZKA + "generacja" + i
 //							+ ".dat");
 					lista
-							.addAll(IndividualIO
-									.odczytajZPliku(SCIEZKA + "/generacja"
-											+ i + ".dat"));
+							.addAll(IndividualIO.odczytajZPliku(SCIEZKA + "/generacja" + i + ".dat"));
 				}
 			} else {
 				lista = IndividualIO

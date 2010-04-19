@@ -1,7 +1,6 @@
 package Gracze.gracz_v3;
 
 import java.util.Date;
-import java.util.Random;
 
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import wevo.TexasObjectiveFunction;
@@ -11,6 +10,7 @@ import cuda.swig.ai_texas_swig;
 import engine.TexasSettings;
 import generator.GeneratorGraczyZGeneracji;
 import generator.IndividualGenerator;
+import generator.ProstyGeneratorLiczb;
 
 /**
  * Klasa ma metode main, przy pomocy ktorej mozna uruchomic obliczanie funkcji celu
@@ -65,7 +65,7 @@ public class TestIndividuala {
 		System.out.println("\n\n==Test funkcji celu==");
 		
 		GeneratorRegulv3.init();
-		Random random = new Random(465);
+		ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
 		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
 		
 		final int LICZBA_OSOBNIKOW=100;
@@ -76,7 +76,8 @@ public class TestIndividuala {
 
 		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
 		for (int i=0; i < LICZBA_OSOBNIKOW; i++) {
-			osobniki_java[i] = generator.lista.get( random.nextInt( generator.lista.size() ) );
+			int losowaLiczba = random.nextInt( generator.lista.size() );
+			osobniki_java[i] = generator.lista.get( losowaLiczba );
 			osobniki[i] = osobniki_java[i].getGenes();
 		}
 		
