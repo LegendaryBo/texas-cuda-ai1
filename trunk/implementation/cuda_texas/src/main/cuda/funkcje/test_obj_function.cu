@@ -1,4 +1,4 @@
-#include "rozgrywka.h"
+#include "rozgrywka.cu"
 #include "osobnikiIO.h"
 
 #include <stdio.h>

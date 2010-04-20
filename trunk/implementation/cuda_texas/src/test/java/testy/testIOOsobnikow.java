@@ -2,6 +2,7 @@ package testy;
 
 import generator.IndividualIO;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -24,6 +25,7 @@ public class testIOOsobnikow extends TestCase {
     IndividualIO.zapiszDoPliku(lista, PLIK);
     
     ArrayList<EvBinaryVectorIndividual> lista2 = IndividualIO.odczytajZPliku(PLIK);
+    new File(PLIK).delete();
     
     EvBinaryVectorIndividual pOsobnikTestowy = lista2.get(0);
     EvBinaryVectorIndividual pOsobnikTestowy2 = lista2.get(1);
