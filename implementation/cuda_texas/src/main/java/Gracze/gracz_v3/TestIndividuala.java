@@ -21,7 +21,7 @@ public class TestIndividuala {
 	final int ILOSC_SPRAWDZEN = 20000;
 
 	public TestIndividuala() {
-		TexasSettings.setTexasLibraryPath();
+//		TexasSettings.setTexasLibraryPath();
 	}
 
 	public static int ile_porownan = 0;
@@ -33,21 +33,21 @@ public class TestIndividuala {
 		TestIndividuala bla = new TestIndividuala();
 
 		
-		if (args.length < 3) {
-			System.out.println("Do uruchomienia testu niezbedne sa 3 parametry:");
-			System.out.println("1) Liczba obliczen funkcji celu (int)");
-			System.out.println("2) Liczba partii na jedna funkcje celu (int)");
-			System.out.println("3) Liczba watkow na blok w CUDA (int)");
-			System.out.println("4) logi (0 lub 1), argument opcjonalny");
-			return;
-		}
-		
-		if (args.length > 3 && Integer.parseInt( args[3] )==1)
-		TexasObjectiveFunction.LOGI=true;
-			
-		bla.LICZBA_PARTII =  Integer.parseInt( args[1] );
-		bla.LICZBA_WATKOW_NA_BLOK = Integer.parseInt( args[2] );
-		bla.LICZBA_TESTOW = Integer.parseInt(args[0]);
+//		if (args.length < 3) {
+//			System.out.println("Do uruchomienia testu niezbedne sa 3 parametry:");
+//			System.out.println("1) Liczba obliczen funkcji celu (int)");
+//			System.out.println("2) Liczba partii na jedna funkcje celu (int)");
+//			System.out.println("3) Liczba watkow na blok w CUDA (int)");
+//			System.out.println("4) logi (0 lub 1), argument opcjonalny");
+//			return;
+//		}
+//		
+//		if (args.length > 3 && Integer.parseInt( args[3] )==1)
+//		TexasObjectiveFunction.LOGI=true;
+//			
+//		bla.LICZBA_PARTII =  Integer.parseInt( args[1] );
+//		bla.LICZBA_WATKOW_NA_BLOK = Integer.parseInt( args[2] );
+//		bla.LICZBA_TESTOW = Integer.parseInt(args[0]);
 		
 		bla.testFunkcjiCelu();
 	}
@@ -65,20 +65,29 @@ public class TestIndividuala {
 		System.out.println("\n\n==Test funkcji celu==");
 		
 		GeneratorRegulv3.init();
+		System.out.println(GeneratorRegulv3.rozmiarGenomu);
 		ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
 		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
 		
 		final int LICZBA_OSOBNIKOW=100;
 		final int LICZBA_INTOW= (GeneratorRegulv3.rozmiarGenomu-1)/32 +1;
 		
-		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 4, true);
+		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 11, true);
 		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
-
 		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
 		for (int i=0; i < LICZBA_OSOBNIKOW; i++) {
 			int losowaLiczba = random.nextInt( generator.lista.size() );
 			osobniki_java[i] = generator.lista.get( losowaLiczba );
+//			osobniki_java[i] = generator.lista.get( i );
+//			System.out.print("osobnik nr "+(i+1)+" "+losowaLiczba+" ");
+			for (int j=0; j < GeneratorRegulv3.rozmiarGenomu; j++ ) {
+//				System.out.print(osobniki_java[i].getGene(j));
+			}
 			osobniki[i] = osobniki_java[i].getGenes();
+			int suma=0;
+			for (int j=0; j < osobniki[i].length; j++)
+				suma+=osobniki[i][j];
+//			System.out.println(suma);
 		}
 		
 		TexasObjectiveFunction objective_function = new TexasObjectiveFunction(LICZBA_PARTII, LICZBA_OSOBNIKOW, osobniki_java);

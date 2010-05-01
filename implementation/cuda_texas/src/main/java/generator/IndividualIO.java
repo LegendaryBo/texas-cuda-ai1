@@ -1,6 +1,7 @@
 package generator;
 
 import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,22 +31,24 @@ public final class IndividualIO {
 	 */
 	public static void zapiszDoPlikuBinarnego(ArrayList<EvBinaryVectorIndividual> aOsobniki, String file) {
 
-		ObjectOutputStream ois = null;
+		DataOutputStream ois = null;
 		try {
-			ois = new ObjectOutputStream(new FileOutputStream(file));
+			ois = new DataOutputStream(new FileOutputStream(file));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		try {
 			ois.writeInt(aOsobniki.size());
+			ois.flush();
 			for (int i = 0; i < aOsobniki.size(); i++) {
 				int[] geny = aOsobniki.get(i).getBoolTable();
-				System.out.println(geny.length);
+
 				for (int j = 0; j < geny.length; j++) {
 					ois.writeInt(geny[j]);
 				}
 			}
+			ois.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
