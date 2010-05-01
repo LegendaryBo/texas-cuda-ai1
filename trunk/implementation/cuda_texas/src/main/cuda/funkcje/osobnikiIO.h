@@ -8,10 +8,14 @@ using std::ifstream;
 using namespace std;
 #include <sstream>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../struktury/osobnik.h"
 
 #ifndef OSOBNIK_IO_H
 #define OSOBNIK_IO_H
+
 
 /**
  * ilePlikow - ile plikow bierze udzial
@@ -23,19 +27,25 @@ ZbiorOsobnikow *odczytajOsobnikiZPliku(char *pPlikZrodlowy, int rozmiarGenow) {
 	ifstream indata; // indata is like cin
 	int liczbaOsobnikow;
 
+//	printf("%s", pPlikZrodlowy);
+
 	indata.open(pPlikZrodlowy); // opens the file
 	if (!indata) { // file couldn't be opened
-		cerr << "Error: file could not be opened" << endl;
+		cerr << "Error: nie mozna otworzyc pliku: \t " << pPlikZrodlowy << endl;
 		exit(1);
 	}
 
-	indata >> liczbaOsobnikow;
+	liczbaOsobnikow = indata.get()*256*256*256 + indata.get()*256*256 + indata.get()*256 + indata.get();
 
-	ZbiorOsobnikow *zbior_osobnikow = new ZbiorOsobnikow;
-	zbior_osobnikow->osobniki = (Osobnik**)malloc( sizeof(Osobnik*) * liczbaOsobnikow );
-	Osobnik** osobnik = zbior_osobnikow->osobniki;
+
+	ZbiorOsobnikow *zbior_osobnikow = new ZbiorOsobnikow();
+
+
+	Osobnik** osobnik = (Osobnik**)malloc( sizeof(Osobnik*) * liczbaOsobnikow );
+
+	zbior_osobnikow->osobniki = osobnik;
 	for (int i=0; i < liczbaOsobnikow; i++) {
-		osobnik[i] = new Osobnik;
+		osobnik[i] = new Osobnik();
 	}
 
 	zbior_osobnikow->liczba_osobnikow=liczbaOsobnikow;
@@ -43,7 +53,7 @@ ZbiorOsobnikow *odczytajOsobnikiZPliku(char *pPlikZrodlowy, int rozmiarGenow) {
 	for (int i=0; i < liczbaOsobnikow; i++) {
 		osobnik[i]->geny = (int*)malloc(sizeof(int) * rozmiarGenow);
 		for (int j=0; j < rozmiarGenow; j++)
-			indata >> osobnik[i]->geny[j];
+			osobnik[i]->geny[j] = indata.get()*256*256*256 + indata.get()*256*256 + indata.get()*256 + indata.get();
 	}
 	indata.close();
 
@@ -61,9 +71,9 @@ ZbiorOsobnikow *odczytajOsobnikiZKatalogu(int ilePlikow,string pKatalogZrodlowy,
 	int pSumarycznaLiczbaOsobnikow=0;
 	for (int i=1; i <= ilePlikow; i++) {
 		stringstream nazwaKatalogu;
-		nazwaKatalogu << pKatalogZrodlowy << "/generacja" << i << ".bin";
+		nazwaKatalogu << pKatalogZrodlowy << "generacja" << i << ".bin";
 		zbiory_osobnikow[i-1] = odczytajOsobnikiZPliku( (char*)nazwaKatalogu.str().c_str(), rozmiarGenow );
-		pSumarycznaLiczbaOsobnikow += zbiory_osobnikow[i]->liczba_osobnikow;
+		pSumarycznaLiczbaOsobnikow += zbiory_osobnikow[i-1]->liczba_osobnikow;
 	}
 
 	Osobnik **osobnik = (Osobnik**)malloc( sizeof(Osobnik*) * pSumarycznaLiczbaOsobnikow );
@@ -74,7 +84,8 @@ ZbiorOsobnikow *odczytajOsobnikiZKatalogu(int ilePlikow,string pKatalogZrodlowy,
 			k++;
 		}
 	}
-
+//	printf("kkkkkk %d",k);
+//	printf("sumaryczna liczba osobnikow %d",pSumarycznaLiczbaOsobnikow);
 	ZbiorOsobnikow *wszystkie_osobniki = new ZbiorOsobnikow;
 	wszystkie_osobniki->osobniki=osobnik;
 	wszystkie_osobniki->liczba_osobnikow=pSumarycznaLiczbaOsobnikow;

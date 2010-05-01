@@ -7,9 +7,10 @@ package generator;
 public class ProstyGeneratorLiczb extends Object {
 
 	// prosty generator (a*STAN+b) mod m 
-	private int a=243812;
-	private int b=353542;
-	private int m=6592981;
+	int a=65537;
+	int b=257;
+//	int c=4312;
+//	int d=54321;
 	
 	private int seed=0;
 	
@@ -18,7 +19,10 @@ public class ProstyGeneratorLiczb extends Object {
 	}
 	
 	public int nextInt(int modulo) {
-		seed = (a*seed +b) % m;
-		return seed%modulo; 
+		seed = a*seed + b;
+		if (seed < 0)
+			seed -=seed;
+		
+		return seed%modulo;
 	}
 }
