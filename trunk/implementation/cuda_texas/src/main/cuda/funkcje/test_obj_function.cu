@@ -70,9 +70,8 @@ void wypiszOsobnika(int *osobnik) {
 
 int main() {
 
-	int *osobnik_obliczany = (int*)malloc( sizeof(int) * LICZBA_OSOBNIKOW );
-	for (int i=0; i < liczba_intow; i++)
-		osobnik_obliczany[i] = nextInt();
+
+
 	seed=465; // resetujemy ustawienia generatora
 
 	// ladowanie osobnikow
@@ -89,9 +88,14 @@ int main() {
 		wypiszOsobnika(osobniki[i]);
 	}
 
-	osobniki[100] = osobnik_obliczany;
-	float wynik = obliczFunkcjeCelu(osobniki);
-	printf("wynik osobnika: %f",wynik);
+	int *osobnik_obliczany = (int*)malloc( sizeof(int) * LICZBA_OSOBNIKOW );
+	for (int k=0; k < 100; k++) {
+		for (int i=0; i < liczba_intow; i++)
+			osobnik_obliczany[i] = nextInt();
+		osobniki[100] = osobnik_obliczany;
+		float wynik = obliczFunkcjeCelu(osobniki);
+		printf("wynik osobnika: %f",wynik);
+	}
 }
 
 
