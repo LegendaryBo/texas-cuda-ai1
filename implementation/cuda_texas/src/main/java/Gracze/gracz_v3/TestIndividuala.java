@@ -49,6 +49,11 @@ public class TestIndividuala {
 //		bla.LICZBA_WATKOW_NA_BLOK = Integer.parseInt( args[2] );
 //		bla.LICZBA_TESTOW = Integer.parseInt(args[0]);
 		
+		System.out.println("Obliczanie funkcji celu na GPU i na CPU");
+		System.out.println("Liczba partii na jedna funkcje celu: "+bla.LICZBA_PARTII);
+		System.out.println("Liczba watkow na blok: "+bla.LICZBA_WATKOW_NA_BLOK);
+		System.out.println("Liczba testow: "+bla.LICZBA_TESTOW);
+		
 		bla.testFunkcjiCelu();
 	}
 	
