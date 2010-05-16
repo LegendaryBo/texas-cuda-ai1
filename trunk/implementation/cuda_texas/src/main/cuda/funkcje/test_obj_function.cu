@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 int liczba_intow = 73;
 int liczba_genow=2329;
-int liczba_gier=1000;
 int LICZBA_OSOBNIKOW=101;
 int seed=465;
 int a=65537;
@@ -28,13 +28,14 @@ int nextInt() {
 	return seed;
 }
 
-float obliczFunkcjeCelu(int **osobniki){
+float obliczFunkcjeCelu(int **osobniki, int liczba_gier, int liczba_watkow){
 	float *wynik = (float*)malloc(sizeof(float));
 	rozegrajNGierCUDA(101,
 			osobniki, wynik,
 			liczba_gier, //liczba gier
 			liczba_intow,
 			16 );
+
 //	for (int i=0; i < liczba_gier; i++) {
 //		printf("%f\n",wynik[0]);
 //	}
@@ -73,6 +74,15 @@ int main( int argc, char* argv[] ) {
 
 	seed=465; // resetujemy ustawienia generatora
 
+	if (argc < 3) {
+		printf("Blad, wymagane sa 3 parametry:\n");
+		printf("1) bezwzbledna sciezka do katalogu z osobnikami:\n");
+		printf("2) liczba gier na jedna funkcje celu:\n");
+		printf("3) liczba watkow na jednego osobnika:\n");
+		printf("4) liczba obliczanych osobnikow:\n");
+	}
+
+
 	// ladowanie osobnikow
 	ZbiorOsobnikow *zbior_osobnikow = odczytajOsobnikiZKatalogu(11,
 			argv[1],
@@ -80,7 +90,15 @@ int main( int argc, char* argv[] ) {
 			liczba_intow);
 	int liczbaOsobnikow = zbior_osobnikow->liczba_osobnikow;
 
-	printf("liczba osobnikow %d \n", liczbaOsobnikow);
+	int liczba_gier = atoi(argv[2]);
+	int liczba_watkow = atoi(argv[3]);
+	int liczba_osobnikow = atoi(argv[4]);
+
+	printf("Obliczanie funkcji celu na GPU \n");
+	printf("sumaryczna liczba osobnikow wczytanych z pliku %d \n", liczbaOsobnikow);
+	printf("liczba gier: %d \n", liczba_gier);
+	printf("liczba watkow: %d \n", liczba_watkow);
+	printf("liczba obliczanych osobnikow: %d \n", liczba_osobnikow);
 
 	int **osobniki =  (int**)malloc( sizeof(int*) * LICZBA_OSOBNIKOW );
 	for (int i=0; i < 100; i++) {
@@ -91,15 +109,14 @@ int main( int argc, char* argv[] ) {
 	}
 
 	int *osobnik_obliczany = (int*)malloc( sizeof(int) * LICZBA_OSOBNIKOW );
-	for (int k=0; k < 100; k++) {
-//		for (int i=0; i < liczba_intow; i++)
-//			osobnik_obliczany[i] = nextInt()
+	for (int k=0; k < liczba_osobnikow; k++) {
+
 		int losowa = nextInt(liczbaOsobnikow);
 		osobniki[100] = zbior_osobnikow->osobniki[ losowa ]->geny;
-		float wynik = obliczFunkcjeCelu(osobniki);
-		printf("%d ", (k+1));
+		float wynik = obliczFunkcjeCelu(osobniki, liczba_gier, liczba_watkow);
+		printf("osobnik nr %d - ", (k+1));
 //		printf(" hash osobnika %d", obliczHashOsobnika(osobniki[100], liczba_intow)  );
-		printf("wynik osobnika: %f \n",wynik);
+		printf(" %f \n",wynik);
 	}
 }
 
