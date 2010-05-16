@@ -6,7 +6,7 @@
 
 int liczba_intow = 73;
 int liczba_genow=2329;
-int liczba_gier=5;
+int liczba_gier=1000;
 int LICZBA_OSOBNIKOW=101;
 int seed=465;
 int a=65537;
@@ -35,9 +35,9 @@ float obliczFunkcjeCelu(int **osobniki){
 			liczba_gier, //liczba gier
 			liczba_intow,
 			16 );
-	for (int i=0; i < liczba_gier; i++) {
-		printf("%f\n",wynik[0]);
-	}
+//	for (int i=0; i < liczba_gier; i++) {
+//		printf("%f\n",wynik[0]);
+//	}
 	return wynik[0];
 }
 
@@ -61,24 +61,26 @@ void wypiszOsobnika(int *osobnik) {
 //	printf("\n");
 }
 
-//int obliczHashOsobnika(int *osobnik, int dlugoscOsobnikaWIntach) {
-//	int hash=0;
-//	for (int i=0; i < dlugoscOsobnikaWIntach; i++) {
-//		hash+=i*osobnik[i];
-//	}
-//}
+int obliczHashOsobnika(int *osobnik, int dlugoscOsobnikaWIntach) {
+	int hash=0;
+	for (int i=0; i < dlugoscOsobnikaWIntach; i++) {
+		hash+=i*osobnik[i];
+	}
+	return hash;
+}
 
-int main() {
-
-
+int main( int argc, char* argv[] ) {
 
 	seed=465; // resetujemy ustawienia generatora
 
 	// ladowanie osobnikow
 	ZbiorOsobnikow *zbior_osobnikow = odczytajOsobnikiZKatalogu(11,
-			"/home/railman/workspace/svn/texas-cuda-ai1/implementation/cuda_texas/target/classes/texas_individuale/",
+			argv[1],
+//			"/home/railman/workspace/svn/texas-cuda-ai1/implementation/cuda_texas/target/classes/texas_individuale/",
 			liczba_intow);
 	int liczbaOsobnikow = zbior_osobnikow->liczba_osobnikow;
+
+	printf("liczba osobnikow %d \n", liczbaOsobnikow);
 
 	int **osobniki =  (int**)malloc( sizeof(int*) * LICZBA_OSOBNIKOW );
 	for (int i=0; i < 100; i++) {
@@ -90,11 +92,14 @@ int main() {
 
 	int *osobnik_obliczany = (int*)malloc( sizeof(int) * LICZBA_OSOBNIKOW );
 	for (int k=0; k < 100; k++) {
-		for (int i=0; i < liczba_intow; i++)
-			osobnik_obliczany[i] = nextInt();
-		osobniki[100] = osobnik_obliczany;
+//		for (int i=0; i < liczba_intow; i++)
+//			osobnik_obliczany[i] = nextInt()
+		int losowa = nextInt(liczbaOsobnikow);
+		osobniki[100] = zbior_osobnikow->osobniki[ losowa ]->geny;
 		float wynik = obliczFunkcjeCelu(osobniki);
-		printf("wynik osobnika: %f",wynik);
+		printf("%d ", (k+1));
+//		printf(" hash osobnika %d", obliczHashOsobnika(osobniki[100], liczba_intow)  );
+		printf("wynik osobnika: %f \n",wynik);
 	}
 }
 
