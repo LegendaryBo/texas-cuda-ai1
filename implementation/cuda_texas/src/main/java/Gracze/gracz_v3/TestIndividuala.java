@@ -21,7 +21,7 @@ public class TestIndividuala {
 	final int ILOSC_SPRAWDZEN = 20000;
 
 	public TestIndividuala() {
-//		TexasSettings.setTexasLibraryPath();
+		TexasSettings.setTexasLibraryPath();
 	}
 
 	public static int ile_porownan = 0;
@@ -52,9 +52,9 @@ public class TestIndividuala {
 		bla.testFunkcjiCelu();
 	}
 	
-	int LICZBA_PARTII=10000;
+	int LICZBA_PARTII=1000;
 	int LICZBA_WATKOW_NA_BLOK=8;	
-	int LICZBA_TESTOW=5;
+	int LICZBA_TESTOW=10;
 	
 	@SuppressWarnings("deprecation")
 	public void testFunkcjiCelu() {
@@ -78,6 +78,8 @@ public class TestIndividuala {
 		for (int i=0; i < LICZBA_OSOBNIKOW; i++) {
 			int losowaLiczba = random.nextInt( generator.lista.size() );
 			osobniki_java[i] = generator.lista.get( losowaLiczba );
+//			System.out.println("test "+losowaLiczba);
+
 //			osobniki_java[i] = generator.lista.get( i );
 //			System.out.print("osobnik nr "+(i+1)+" "+losowaLiczba+" ");
 			for (int j=0; j < GeneratorRegulv3.rozmiarGenomu; j++ ) {
@@ -98,13 +100,13 @@ public class TestIndividuala {
 			ai_texas_swig.setIndividualPTR(osobnik_ptr, osobniki_ptr, i);
 		}
 		
-		IndividualGenerator generator_losowy = new IndividualGenerator(123, LICZBA_GENOW);
+//		IndividualGenerator generator_losowy = new IndividualGenerator(123, LICZBA_GENOW);
 		
 		for (int i=0; i < LICZBA_TESTOW; i++) {	
 			
-			EvBinaryVectorIndividual obliczany_osobnik = generator_losowy.generate();
+			int losowa = random.nextInt(generator.lista.size());
+			EvBinaryVectorIndividual obliczany_osobnik = generator.lista.get(losowa);
 			SWIGTYPE_p_int obliczany_osobnik_ptr = ai_texas_swig.getOsobnikPTR(obliczany_osobnik.getGenes(), LICZBA_INTOW);
-			
 
 			ai_texas_swig.setIndividualPTR(obliczany_osobnik_ptr, osobniki_ptr, LICZBA_OSOBNIKOW);
 			
@@ -133,6 +135,14 @@ public class TestIndividuala {
 		System.out.println("\nCzas oblizcen funkcji celu:");
 		System.out.println("czas c: "+czas_c/1000.0f+"s");
 		System.out.println("czas java: "+czas_java/1000.0f+"s");
+	}
+
+	private int getHash(EvBinaryVectorIndividual evBinaryVectorIndividual) {
+		int hash=0;
+		for (int i=0; i < evBinaryVectorIndividual.getBoolTable().length; i++) {
+			hash+=i*evBinaryVectorIndividual.getBoolTable()[i];
+		}
+		return hash;
 	}
 	
 }
