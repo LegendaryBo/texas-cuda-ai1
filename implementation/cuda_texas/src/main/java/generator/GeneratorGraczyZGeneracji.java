@@ -1,9 +1,9 @@
 package generator;
 
+import engine.TexasSettings;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import engine.TexasSettings;
 
 import operatory.WywalDuplikaty;
 import pl.wroc.uni.ii.evolution.engine.EvAlgorithm;
@@ -98,7 +98,8 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 		System.out.println("GENERUJE GENERACE " + (generacja + 1) + ":");
 		TexasObjectiveFunction objective_function = new TexasObjectiveFunction(
 				2000, generacja, true, true);
-		int populacja = 100;
+//		CUDATexasObjectiveFunction objective_function = new CUDATexasObjectiveFunction(11, 128, 2000);
+		int populacja = 50;
 		int genes = GeneratorRegulv3.rozmiarGenomu;
 		System.out.println("rozmiar osobnika " + genes);
 
@@ -146,12 +147,12 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 		for (int i = 0; i < iteracji; i++) {
 
 			genericEA.doIteration();
-			System.out.println("oblizcen funkcji celu"
-					+ objective_function.licznik);
-			String[] partie = objective_function.getPrzykladowePartie(1,
-					genericEA.getBestResult());
-			for (int j = 0; j < partie.length; j++)
-				System.out.println(partie[j]);
+//			System.out.println("oblizcen funkcji celu"
+//					+ objective_function.licznik);
+//			String[] partie = objective_function.getPrzykladowePartie(1,
+//					genericEA.getBestResult());
+//			for (int j = 0; j < partie.length; j++)
+//				System.out.println(partie[j]);
 
 			EvPopulation<EvBinaryVectorIndividual> pop = genericEA
 					.getPopulation().kBest(ILE_DO_PLIKU);
@@ -176,7 +177,7 @@ public class GeneratorGraczyZGeneracji extends IndividualGenerator {
 	public static void main(String[] args) {
 		GeneratorRegulv3.init();
 		
-		for (int i = 9; i <= 10; i++)
+		for (int i = 10; i <= 11; i++)
 			GenerujGeneracje(i);
 	}
 
