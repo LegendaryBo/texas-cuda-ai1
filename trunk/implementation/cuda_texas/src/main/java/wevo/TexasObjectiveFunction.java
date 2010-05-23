@@ -4,6 +4,7 @@ import engine.Gra;
 import engine.rezultaty.Rezultat;
 import generator.GeneratorGraczyZGeneracji;
 import generator.IndividualGenerator;
+import generator.ProstyGeneratorLiczb;
 import generator.SimpleIndividualGenerator;
 
 import java.util.Random;
@@ -12,6 +13,7 @@ import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import pl.wroc.uni.ii.evolution.engine.prototype.EvObjectiveFunction;
 import Gracze.Gracz;
 import Gracze.GraczAIv3;
+import Gracze.gracz_v3.GeneratorRegulv3;
 
 /**
  * 
@@ -50,6 +52,24 @@ public class TexasObjectiveFunction implements
 
 	private boolean resetRandomow;
 
+	// tylko do testow porownawczych!
+	public TexasObjectiveFunction(int games_) {
+		this(games_, -1, false, false);
+
+		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
+		final int LICZBA_OSOBNIKOW=100;
+		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 11, true);
+		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
+		ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
+		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
+		for (int i=0; i < LICZBA_OSOBNIKOW; i++) {
+			int losowaLiczba = random.nextInt( generator.lista.size() );
+			osobniki_java[i] = generator.lista.get( losowaLiczba );
+		}
+		
+		generator_individuali = new SimpleIndividualGenerator(games_, LICZBA_GENOW, osobniki_java);
+	}
+	
 	public TexasObjectiveFunction(int games_, int dlugosc_osobnika,
 			EvBinaryVectorIndividual[] partnerzy) {
 		this(games_, -1, false, false);

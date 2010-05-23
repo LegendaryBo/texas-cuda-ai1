@@ -2,9 +2,7 @@ package wevo;
 
 import engine.TexasSettings;
 import generator.GeneratorGraczyZGeneracji;
-
-import java.util.Random;
-
+import generator.ProstyGeneratorLiczb;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import pl.wroc.uni.ii.evolution.engine.prototype.EvObjectiveFunction;
 import Gracze.gracz_v3.GeneratorRegulv3;
@@ -26,7 +24,7 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 	private final int LICZBA_OSOBNIKOW = 100; // wiecej sie nie miesci na karte :(
 	private final int LICZBA_GENOW = GeneratorRegulv3.rozmiarGenomu;
 	private final int LICZBA_INTOW = (GeneratorRegulv3.rozmiarGenomu - 1) / 32 + 1;
-	private final Random random = new Random();
+	private final ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
 
 	private final int liczbaWatkowNaBlok;
 	private final int liczbaPartii;
@@ -97,6 +95,6 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 
 	@Override
 	public void finalize() {
-		usunOsobnikiTreningoweZPamieci();
+//		usunOsobnikiTreningoweZPamieci();
 	}
 }
