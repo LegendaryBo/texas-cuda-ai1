@@ -154,9 +154,10 @@ void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int licz
 
 
 //64kb pamieci stalej
-static __constant__ int osobniki_const[256*64];
+//static __constant__ int osobniki_const[256*64];
 
-__global__ void obliczZlecenie(int liczbaGier, Zlecenie *zlecenia_cuda, float *wyniki_device, int ile_intow, Gra *gra, Reguly *reguly) {
+__global__ void obliczZlecenie(int liczbaGier, Zlecenie *zlecenia_cuda, float *wyniki_device, int ile_intow, Gra *gra, Reguly *reguly,
+int *osobniki) {
 
 	//extern __shared__ int temp_count[];
 
@@ -168,7 +169,7 @@ __global__ void obliczZlecenie(int liczbaGier, Zlecenie *zlecenia_cuda, float *w
 	if (nr_zlecenia>=liczbaGier)
 	  return;
 
-	(zlecenia_cuda + nr_zlecenia ) -> osobniki = &osobniki_const[0];
+	(zlecenia_cuda + nr_zlecenia ) -> osobniki = &osobniki[0];
 	(zlecenia_cuda + nr_zlecenia ) -> nrRozdania = nr_zlecenia;
 
 	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[0] = 100;
@@ -183,12 +184,12 @@ __global__ void obliczZlecenie(int liczbaGier, Zlecenie *zlecenia_cuda, float *w
 
 	//__shared__ Gra gra[4];
 
-	nowaGra(   &osobniki_const[0] + 100 *  ile_intow ,
-			&osobniki_const[0] + (nr_zlecenia*6 + 1)%100 *  ile_intow,
-			&osobniki_const[0] + (nr_zlecenia*6 + 2)%100 *  ile_intow,
-			&osobniki_const[0] + (nr_zlecenia*6 + 3)%100 *  ile_intow,
-			&osobniki_const[0] + (nr_zlecenia*6 + 4)%100 *  ile_intow,
-			&osobniki_const[0] + (nr_zlecenia*6 + 5)%100 *  ile_intow,
+	nowaGra(   &osobniki[0] + 100 *  ile_intow ,
+			&osobniki[0] + (nr_zlecenia*6 + 1)%100 *  ile_intow,
+			&osobniki[0] + (nr_zlecenia*6 + 2)%100 *  ile_intow,
+			&osobniki[0] + (nr_zlecenia*6 + 3)%100 *  ile_intow,
+			&osobniki[0] + (nr_zlecenia*6 + 4)%100 *  ile_intow,
+			&osobniki[0] + (nr_zlecenia*6 + 5)%100 *  ile_intow,
 			nr_zlecenia, 3, &gra[nr_zlecenia]);
 
 	float bla = rozegrajPartieDEVICE(&gra[nr_zlecenia], 0, reguly);
@@ -272,11 +273,15 @@ int liczba_intow, int block_size) {
 	size_t size_zlecenie = sizeof(Zlecenie)*N;
 	cudaMalloc((void **) &zlecenia_cuda, size_zlecenie);
 
-    	int sharedMemSize = block_size * sizeof(int) * 10;
+	int *osobniki_cuda;
+	size_t size_osobniki = liczba_intow*sizeof(int)*101;
+	cudaMalloc((void **) &osobniki_cuda, size_osobniki);
 
-        cudaMemcpyToSymbol(osobniki_const, osobniki_statyczna_tablica, liczba_intow*sizeof(int)*101);
+    int sharedMemSize = block_size * sizeof(int) * 10;
+
+    //cudaMemcpyToSymbol(osobniki_const, osobniki_statyczna_tablica, liczba_intow*sizeof(int)*101);
 	obsluzBlad("kopiowanie osobnikow na karte");
-	//cudaMemcpy(osobniki_cuda, osobniki_statyczna_tablica, liczba_intow*sizeof(int)*101, cudaMemcpyHostToDevice);
+	cudaMemcpy(osobniki_cuda, osobniki_statyczna_tablica, size_osobniki, cudaMemcpyHostToDevice);
 	cudaMemcpy(reguly_cuda, reguly_host, sizeof(Reguly), cudaMemcpyHostToDevice);
 
 	int nBlocks = N/block_size + 1;
@@ -284,13 +289,13 @@ int liczba_intow, int block_size) {
 	  nBlocks--;
 
 	obsluzBlad("kopiowanie pozostalych danych na karte");
-	obliczZlecenie <<< nBlocks, block_size,  sharedMemSize>>> (N, zlecenia_cuda, wyniki_device, liczba_intow, gry_cuda, reguly_cuda);
+	obliczZlecenie <<< nBlocks, block_size,  sharedMemSize>>> (N, zlecenia_cuda, wyniki_device, liczba_intow, gry_cuda, reguly_cuda, osobniki_cuda);
 	cudaThreadSynchronize();
 	obsluzBlad("uruchomienia kernela");
 
 	cudaMemcpy(wyniki_host, wyniki_device, size_wyniki  , cudaMemcpyDeviceToHost);
 
-        obsluzBlad("kopiowanie wynikow z karty");
+    obsluzBlad("kopiowanie wynikow z karty");
 
 	float suma = 0.0;
 	for (int i=0; i < N; i++) {
