@@ -64,34 +64,29 @@ public class TestFunkcjiCelu extends TestCase {
 				12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j = 0; j < 6; j++)
-			pIndividual[j] = pIndividualGenerator.generate();
-
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[0].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[1].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[2].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[3].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[4].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[5].getGenes(), 2000);
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
+			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 
 		System.out.println("\n\n==Test AI rundy 1 ("+ILOSC_SPRAWDZEN+ " gier) ==");
 		System.out.println("liczba sprawdzeń... ");
 		
 		for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 			int seed = gneratorRozdan.getSeed();
+			int shift = Math.abs(seed);
 
 			SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-				texas_swig.nowaGra(osobnik1,
-					osobnik2, osobnik3, osobnik4, osobnik5,
-					osobnik6, seed, 2, gra);
+				texas_swig.nowaGra(
+						osobnikPointers[(6+shift%6)%6], 
+						osobnikPointers[(7+shift%6)%6], 
+						osobnikPointers[(8+shift%6)%6], 
+						osobnikPointers[(9+shift%6)%6], 
+						osobnikPointers[(10+shift%6)%6], 
+						osobnikPointers[(11+shift%6)%6], 
+					seed, 2, gra);
 			int ktory_gracz = random.nextInt(6);
-
 
 			Gra gra_java = new Gra(gneratorRozdan);
 			float[] wyniki_c = new float[1];
@@ -112,21 +107,11 @@ public class TestFunkcjiCelu extends TestCase {
 			gneratorRozdan.generate();
 			
 			if (i%1000==0) {
-				for (int j = 0; j < 6; j++)
+				for (int j = 0; j < 6; j++) {
 					pIndividual[j] = pIndividualGenerator.generate();
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000);
+				}
 
-				osobnik1 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[0].getGenes(), 2000);
-				osobnik2 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[1].getGenes(), 2000);
-				osobnik3 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[2].getGenes(), 2000);
-				osobnik4 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[3].getGenes(), 2000);
-				osobnik5 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[4].getGenes(), 2000);
-				osobnik6 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[5].getGenes(), 2000);
 			}
 			ai_texas_swig.destruktorGra(gra);
 		}
@@ -155,30 +140,26 @@ public class TestFunkcjiCelu extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(
 				12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
-
-		for (int j = 0; j < 6; j++)
-			pIndividual[j] = pIndividualGenerator.generate();
-
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[0].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[1].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[2].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[3].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[4].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[5].getGenes(), 2000);
+		
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
+			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 
 		for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 			int seed = gneratorRozdan.getSeed();
+			int shift = Math.abs(seed);
 
 			SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-			texas_swig.nowaGra(osobnik1,
-					osobnik2, osobnik3, osobnik4, osobnik5,
-					osobnik6, seed, 2, gra);
+			texas_swig.nowaGra(					
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6],
+					seed, 2, gra);
 	
 			int ktory_gracz = random.nextInt(6);
 
@@ -208,29 +189,11 @@ public class TestFunkcjiCelu extends TestCase {
 			gneratorRozdan.generate();
 			
 			if (i%1000==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				
-				for (int j = 0; j < 6; j++)
-					pIndividual[j] = pIndividualGenerator.generate();
-
-				osobnik1 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[0].getGenes(), 2000);
-				osobnik2 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[1].getGenes(), 2000);
-				osobnik3 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[2].getGenes(), 2000);
-				osobnik4 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[3].getGenes(), 2000);
-				osobnik5 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[4].getGenes(), 2000);
-				osobnik6 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[5].getGenes(), 2000);
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			ai_texas_swig.destruktorGra(gra);
 		}
@@ -259,29 +222,25 @@ public class TestFunkcjiCelu extends TestCase {
 				12, 3000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j = 0; j < 6; j++)
-			pIndividual[j] = pIndividualGenerator.generate();
-
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[0].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[1].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[2].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[3].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[4].getGenes(), 2000);
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[5].getGenes(), 2000);
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
+			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 
 		for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 			int seed = gneratorRozdan.getSeed();
+			int shift = Math.abs(seed);
 
 			SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-			texas_swig.nowaGra(osobnik1,
-					osobnik2, osobnik3, osobnik4, osobnik5,
-					osobnik6, seed, 2, gra);
+			texas_swig.nowaGra(
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
+					seed, 2, gra);
 	
 			int ktory_gracz = random.nextInt(6);
 
@@ -311,29 +270,11 @@ public class TestFunkcjiCelu extends TestCase {
 			gneratorRozdan.generate();
 			
 			if (i%1000==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				
-				for (int j = 0; j < 6; j++)
-					pIndividual[j] = pIndividualGenerator.generate();
-
-				osobnik1 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[0].getGenes(), 2000);
-				osobnik2 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[1].getGenes(), 2000);
-				osobnik3 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[2].getGenes(), 2000);
-				osobnik4 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[3].getGenes(), 2000);
-				osobnik5 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[4].getGenes(), 2000);
-				osobnik6 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[5].getGenes(), 2000);
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 			ai_texas_swig.destruktorGra(gra);
@@ -365,31 +306,26 @@ public class TestFunkcjiCelu extends TestCase {
 				12, 3000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j = 0; j < 6; j++)
-			pIndividual[j] = pIndividualGenerator.generate();
-
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[0].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[1].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[2].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[3].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[4].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[5].getGenes(), 3000);
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
+			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 
 		float[] wyniki_c = new float[1];
 		
 		for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 			int seed = gneratorRozdan.getSeed();
+			int shift = Math.abs(seed);
 
 			SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-			texas_swig.nowaGra(osobnik1,
-					osobnik2, osobnik3, osobnik4, osobnik5,
-					osobnik6, seed, 2, gra);
+			texas_swig.nowaGra(					
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], seed, 2, gra);
 	
 			int ktory_gracz = random.nextInt(6);
 			
@@ -415,29 +351,11 @@ public class TestFunkcjiCelu extends TestCase {
 			gneratorRozdan.generate();
 			
 			if (i%1000==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				
-				for (int j = 0; j < 6; j++)
-					pIndividual[j] = pIndividualGenerator.generate();
-
-				osobnik1 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[0].getGenes(), 3000);
-				osobnik2 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[1].getGenes(), 3000);
-				osobnik3 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[2].getGenes(), 3000);
-				osobnik4 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[3].getGenes(), 3000);
-				osobnik5 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[4].getGenes(), 3000);
-				osobnik6 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[5].getGenes(), 3000);
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 			ai_texas_swig.destruktorGra(gra);
@@ -461,29 +379,25 @@ public class TestFunkcjiCelu extends TestCase {
 				12, 3000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j = 0; j < 6; j++)
-			pIndividual[j] = pIndividualGenerator.generate();
-
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[0].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[1].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[2].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[3].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[4].getGenes(), 3000);
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-				pIndividual[5].getGenes(), 3000);
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
+			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 
 		for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 			int seed = gneratorRozdan.getSeed();
+			int shift = Math.abs(seed);
 
 			SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-			texas_swig.nowaGra(osobnik1,
-					osobnik2, osobnik3, osobnik4, osobnik5,
-					osobnik6, seed, 2, gra);
+			texas_swig.nowaGra(					
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
+					seed, 2, gra);
 	
 			int ktory_gracz = random.nextInt(6);
 
@@ -512,29 +426,11 @@ public class TestFunkcjiCelu extends TestCase {
 			gneratorRozdan.generate();
 			
 			if (i%1000==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				
-				for (int j = 0; j < 6; j++)
-					pIndividual[j] = pIndividualGenerator.generate();
-
-				osobnik1 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[0].getGenes(), 3000);
-				osobnik2 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[1].getGenes(), 3000);
-				osobnik3 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[2].getGenes(), 3000);
-				osobnik4 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[3].getGenes(), 3000);
-				osobnik5 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[4].getGenes(), 3000);
-				osobnik6 = ai_texas_swig.getOsobnikPTR(
-						pIndividual[5].getGenes(), 3000);
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 			ai_texas_swig.destruktorGra(gra);
@@ -563,32 +459,29 @@ public class TestFunkcjiCelu extends TestCase {
 					12, 3000);
 			EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-			for (int j = 0; j < 6; j++)
-				pIndividual[j] = pIndividualGenerator.generate();
 
 			czas_swiga  -= System.nanoTime();
-			SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[0].getGenes(), 3000);
-			SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[1].getGenes(), 3000);
-			SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[2].getGenes(), 3000);
-			SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[3].getGenes(), 3000);
-			SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[4].getGenes(), 3000);
-			SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(
-					pIndividual[5].getGenes(), 3000);
+			SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+			for (int j=0; j < 6; j++) {
+				pIndividual[j] = pIndividualGenerator.generate();		
+				osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+			}	
 			czas_swiga  += System.nanoTime();
 
 			for (int i = 0; i < ILOSC_SPRAWDZEN; i++) {
 				int seed = gneratorRozdan.getSeed();
+				int shift = Math.abs(seed);
 
 				czas_swiga  -= System.nanoTime();
 				SWIGTYPE_p_Gra gra = ai_texas_swig.getGraPtr();
-				texas_swig.nowaGra(osobnik1,
-						osobnik2, osobnik3, osobnik4, osobnik5,
-						osobnik6, seed, 2, gra);
+				texas_swig.nowaGra(					
+						osobnikPointers[(6+shift%6)%6], 
+						osobnikPointers[(7+shift%6)%6], 
+						osobnikPointers[(8+shift%6)%6], 
+						osobnikPointers[(9+shift%6)%6], 
+						osobnikPointers[(10+shift%6)%6], 
+						osobnikPointers[(11+shift%6)%6], 
+						seed, 2, gra);
 				czas_swiga  += System.nanoTime();
 
 				Gra gra_java = new Gra( new GraczAIv3[] { 
@@ -637,28 +530,12 @@ public class TestFunkcjiCelu extends TestCase {
 				gneratorRozdan.generate();
 				
 				if (i%1000==0) {
-					ai_texas_swig.destruktorInt(osobnik1);
-					ai_texas_swig.destruktorInt(osobnik2);
-					ai_texas_swig.destruktorInt(osobnik3);
-					ai_texas_swig.destruktorInt(osobnik4);
-					ai_texas_swig.destruktorInt(osobnik5);
-					ai_texas_swig.destruktorInt(osobnik6);
-					
-					for (int j = 0; j < 6; j++)
-						pIndividual[j] = pIndividualGenerator.generate();
 					czas_swiga  -= System.nanoTime();
-					osobnik1 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[0].getGenes(), 3000);
-					osobnik2 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[1].getGenes(), 3000);
-					osobnik3 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[2].getGenes(), 3000);
-					osobnik4 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[3].getGenes(), 3000);
-					osobnik5 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[4].getGenes(), 3000);
-					osobnik6 = ai_texas_swig.getOsobnikPTR(
-							pIndividual[5].getGenes(), 3000);
+					for (int j=0; j < 6; j++) {
+						ai_texas_swig.destruktorInt(osobnikPointers[j]);
+						pIndividual[j] = pIndividualGenerator.generate();		
+						osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+					}	
 					czas_swiga  += System.nanoTime();
 				}
 				
