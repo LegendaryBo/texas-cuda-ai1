@@ -84,12 +84,12 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 			int nr_rozdania, int mode, Gra *gra) {
 
 		gra->mode = mode;
-		gra->gracze[0].geny = gracz1_geny;
-		gra->gracze[1].geny = gracz2_geny;
-		gra->gracze[2].geny = gracz3_geny;
-		gra->gracze[3].geny = gracz4_geny;
-		gra->gracze[4].geny = gracz5_geny;
-		gra->gracze[5].geny = gracz6_geny;
+		gra->gracze[(0+nr_rozdania)%6].geny = gracz1_geny;
+		gra->gracze[(1+nr_rozdania)%6].geny = gracz2_geny;
+		gra->gracze[(2+nr_rozdania)%6].geny = gracz3_geny;
+		gra->gracze[(3+nr_rozdania)%6].geny = gracz4_geny;
+		gra->gracze[(4+nr_rozdania)%6].geny = gracz5_geny;
+		gra->gracze[(5+nr_rozdania)%6].geny = gracz6_geny;
 
 		for (int i = 0; i < 6; i++) {
 			gra->gracze[i].bilans = 0.0;

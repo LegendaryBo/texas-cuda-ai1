@@ -192,7 +192,7 @@ int *osobniki) {
 			&osobniki[0] + (nr_zlecenia*6 + 5)%100 *  ile_intow,
 			nr_zlecenia, 3, &gra[nr_zlecenia]);
 
-	float bla = rozegrajPartieDEVICE(&gra[nr_zlecenia], 0, reguly);
+	float bla = rozegrajPartieDEVICE(&gra[nr_zlecenia], nr_zlecenia%6, reguly);
 
 //	int spasowani[6];
 //	int wygrani[6];
