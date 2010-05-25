@@ -59,33 +59,30 @@ public class TestRegulIleGrac extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j=0; j < 6; j++) 
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
 			pIndividual[j] = pIndividualGenerator.generate();		
-		
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 		
 
 		
 		
 		for (int i=0; i < ILOSC_SPRAWDZEN; i++) {
-			int seed = gneratorRozdan.getSeed();
+			int seed =  gneratorRozdan.getSeed( );
+			int shift = Math.abs(seed);
 
 
 			SWIGTYPE_p_Gra gra = texas_swig.getGraPTR();
 			
 			
 			texas_swig.nowaGra(
-					osobnik1, 
-					osobnik2, 
-					osobnik3, 
-					osobnik4, 
-					osobnik5, 
-					osobnik6, 
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
 					seed, 2, gra);					
 			int index_start = random.nextInt(1900);
 			int ktory_gracz = random.nextInt(6);
@@ -244,41 +241,29 @@ public class TestRegulIleGrac extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j=0; j < 6; j++) 
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
 			pIndividual[j] = pIndividualGenerator.generate();		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 		
 
 		SWIGTYPE_p_Reguly reguly = ai_texas_swig.getReguly();
 		SWIGTYPE_p_IleGracR1  ile_grac = ai_texas_swig.getIleGracR1PTRZReguly(reguly);
 		
 		GeneratorRegulv3.init();
-		
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;		
+			
 		
 		for (int i=0; i < ILOSC_SPRAWDZEN; i++) {
-			int seed = gneratorRozdan.getSeed();
+			int seed =  gneratorRozdan.getSeed( );
+			int shift = Math.abs(seed);
 	
 			if (i%100==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				for (int j=0; j < 6; j++) 
-					pIndividual[j] = pIndividualGenerator.generate();
-				osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-				osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-				osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-				osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-				osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-				osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 //			System.out.println("test nr"+i);
@@ -287,12 +272,12 @@ public class TestRegulIleGrac extends TestCase {
 			
 			
 			texas_swig.nowaGra(
-					osobnik1, 
-					osobnik2, 
-					osobnik3, 
-					osobnik4, 
-					osobnik5, 
-					osobnik6, 
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
 					seed, 2, gra);		
 
 			int ktory_gracz = random.nextInt(6);
@@ -317,12 +302,9 @@ public class TestRegulIleGrac extends TestCase {
 			ai_texas_swig.destruktorGra(gra);
 		}
 		
-		ai_texas_swig.destruktorInt(osobnik1);
-		ai_texas_swig.destruktorInt(osobnik2);
-		ai_texas_swig.destruktorInt(osobnik3);
-		ai_texas_swig.destruktorInt(osobnik4);
-		ai_texas_swig.destruktorInt(osobnik5);
-		ai_texas_swig.destruktorInt(osobnik6);
+		for (int j = 0; j < osobnikPointers.length; j++)
+			ai_texas_swig.destruktorInt(osobnikPointers[j]);
+		
 		System.out.print("\nTest zakonczony sukcesem");
 	}
 	
@@ -341,39 +323,26 @@ public class TestRegulIleGrac extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j=0; j < 6; j++) 
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
 			pIndividual[j] = pIndividualGenerator.generate();		
-		
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}		
 		
 		SWIGTYPE_p_Reguly reguly = ai_texas_swig.getReguly();
 		SWIGTYPE_p_IleGracRX  ile_grac = ai_texas_swig.getIleGracRXPTRZReguly(reguly, 2);
 		
 		
 		for (int i=0; i < ILOSC_SPRAWDZEN; i++) {
-			int seed = gneratorRozdan.getSeed();
+			int seed =  gneratorRozdan.getSeed( );
+			int shift = Math.abs(seed);
 
 			if (i%100==0) {
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);
-				
-				for (int j=0; j < 6; j++) 
-					pIndividual[j] = pIndividualGenerator.generate();
-				osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-				osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-				osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-				osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-				osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-				osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 //			System.out.println("test nr"+i);
@@ -382,12 +351,12 @@ public class TestRegulIleGrac extends TestCase {
 			
 			
 			texas_swig.nowaGra(
-					osobnik1, 
-					osobnik2, 
-					osobnik3, 
-					osobnik4, 
-					osobnik5, 
-					osobnik6, 
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
 					seed, 2, gra);	
 			
 			int ktory_gracz = random.nextInt(6);
@@ -439,39 +408,25 @@ public class TestRegulIleGrac extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(12, 2000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j=0; j < 6; j++) 
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
 			pIndividual[j] = pIndividualGenerator.generate();		
-		
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}	
 		
 		SWIGTYPE_p_Reguly reguly = ai_texas_swig.getReguly();
 		SWIGTYPE_p_IleGracRX  ile_grac = ai_texas_swig.getIleGracRXPTRZReguly(reguly, 3);
 		
 		for (int i=0; i < ILOSC_SPRAWDZEN; i++) {
-			int seed = gneratorRozdan.getSeed();
+			int seed =  gneratorRozdan.getSeed( );
+			int shift = Math.abs(seed);
 
 			if (i%100==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);				
-				
-				for (int j=0; j < 6; j++) 
-					pIndividual[j] = pIndividualGenerator.generate();
-				osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 2000) ;
-				osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 2000) ;
-				osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 2000) ;
-				osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 2000) ;
-				osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 2000) ;
-				osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 //			System.out.println("test nr"+i);
@@ -480,12 +435,12 @@ public class TestRegulIleGrac extends TestCase {
 			
 			
 			texas_swig.nowaGra(
-					osobnik1, 
-					osobnik2, 
-					osobnik3, 
-					osobnik4, 
-					osobnik5, 
-					osobnik6, 
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
 					seed, 2, gra);	
 			
 
@@ -537,39 +492,25 @@ public class TestRegulIleGrac extends TestCase {
 		IndividualGenerator pIndividualGenerator = new IndividualGenerator(12, 3000);
 		EvBinaryVectorIndividual[] pIndividual = new EvBinaryVectorIndividual[6];
 
-		for (int j=0; j < 6; j++) 
+		SWIGTYPE_p_int[] osobnikPointers = new SWIGTYPE_p_int[6];
+		for (int j=0; j < 6; j++) {
 			pIndividual[j] = pIndividualGenerator.generate();		
-		
-		SWIGTYPE_p_int osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 3000) ;
-		SWIGTYPE_p_int osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 3000) ;
-		SWIGTYPE_p_int osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 3000) ;
-		SWIGTYPE_p_int osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 3000) ;
-		SWIGTYPE_p_int osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 3000) ;
-		SWIGTYPE_p_int osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 2000) ;		
+			osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+		}		
 		
 		SWIGTYPE_p_Reguly reguly = ai_texas_swig.getReguly();
 		SWIGTYPE_p_IleGracRX  ile_grac = ai_texas_swig.getIleGracRXPTRZReguly(reguly, 4);
 		
 		for (int i=0; i < ILOSC_SPRAWDZEN; i++) {
-			int seed = gneratorRozdan.getSeed();
+			int seed =  gneratorRozdan.getSeed( );
+			int shift = Math.abs(seed);
 
 			if (i%100==0) {
-				
-				ai_texas_swig.destruktorInt(osobnik1);
-				ai_texas_swig.destruktorInt(osobnik2);
-				ai_texas_swig.destruktorInt(osobnik3);
-				ai_texas_swig.destruktorInt(osobnik4);
-				ai_texas_swig.destruktorInt(osobnik5);
-				ai_texas_swig.destruktorInt(osobnik6);				
-				
-				for (int j=0; j < 6; j++) 
-					pIndividual[j] = pIndividualGenerator.generate();
-				osobnik1 = ai_texas_swig.getOsobnikPTR(pIndividual[0].getGenes(), 3000) ;
-				osobnik2 = ai_texas_swig.getOsobnikPTR(pIndividual[1].getGenes(), 3000) ;
-				osobnik3 = ai_texas_swig.getOsobnikPTR(pIndividual[2].getGenes(), 3000) ;
-				osobnik4 = ai_texas_swig.getOsobnikPTR(pIndividual[3].getGenes(), 3000) ;
-				osobnik5 = ai_texas_swig.getOsobnikPTR(pIndividual[4].getGenes(), 3000) ;
-				osobnik6 = ai_texas_swig.getOsobnikPTR(pIndividual[5].getGenes(), 3000) ;
+				for (int j=0; j < 6; j++) {
+					ai_texas_swig.destruktorInt(osobnikPointers[j]);
+					pIndividual[j] = pIndividualGenerator.generate();		
+					osobnikPointers[j] = ai_texas_swig.getOsobnikPTR(pIndividual[j].getGenes(), 2000) ;
+				}	
 			}
 			
 //			System.out.println("test nr"+i);
@@ -578,12 +519,12 @@ public class TestRegulIleGrac extends TestCase {
 			
 			
 			texas_swig.nowaGra(
-					osobnik1, 
-					osobnik2, 
-					osobnik3, 
-					osobnik4, 
-					osobnik5, 
-					osobnik6, 
+					osobnikPointers[(6+shift%6)%6], 
+					osobnikPointers[(7+shift%6)%6], 
+					osobnikPointers[(8+shift%6)%6], 
+					osobnikPointers[(9+shift%6)%6], 
+					osobnikPointers[(10+shift%6)%6], 
+					osobnikPointers[(11+shift%6)%6], 
 					seed, 2, gra);	
 			
 
