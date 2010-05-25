@@ -177,12 +177,12 @@ public class TexasObjectiveFunction implements
 			Gracz[] gracze = new Gracz[6];
 
 			for (int j = 0; j < 6; j++)
-				gracze[j] = new GraczAIv3(generator_individuali
+				gracze[(j +i)%6] = new GraczAIv3(generator_individuali
 						.generate(), j);
 
 			int random = generator_kolejnosci.nextInt(6);
 			if (trudnosc<0)
-				random=0;
+				random=i%6;
 			GraczAIv3 gracz = new GraczAIv3(individual, random);
 			gracze[random] = gracz;
 
