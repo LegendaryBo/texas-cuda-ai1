@@ -1,8 +1,13 @@
 
-FLAGS = --device-emulation
+# ponizsza linijka przyda sie dla cuda 3.0 i gcc 4.4, bo sei gryza
+BUG_FIX = -Xcompiler -D__builtin_stdarg_start=__builtin_va_start
+
+FLAGS = $(BUG_FIX) -Xcompiler -fpic
 #FLAGS = --device-emulation --ptxas-options=-v -maxrregcount=64 -g -G
 SWIG_C_FILES_DIR = ../swig/c
 CUDA_LIB = -L/usr/local/cuda/lib -lcudart 
+
+
 
 JAVA = -I$${JAVA_HOME}/include -I$${JAVA_HOME}/include/linux
 
