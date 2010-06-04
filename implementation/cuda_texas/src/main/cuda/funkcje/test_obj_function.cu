@@ -34,7 +34,8 @@ float obliczFunkcjeCelu(int **osobniki, int liczba_gier, int liczba_watkow){
 			osobniki, wynik,
 			liczba_gier, //liczba gier
 			liczba_intow,
-			16 );
+			16,
+			100);
 
 //	for (int i=0; i < liczba_gier; i++) {
 //		printf("%f\n",wynik[0]);
