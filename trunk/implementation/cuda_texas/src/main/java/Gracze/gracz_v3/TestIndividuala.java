@@ -57,7 +57,7 @@ public class TestIndividuala {
 		bla.testFunkcjiCelu();
 	}
 	
-	int LICZBA_PARTII=1000;
+	int LICZBA_PARTII=10000;
 	int LICZBA_WATKOW_NA_BLOK=8;	
 	int LICZBA_TESTOW=10;
 	
@@ -118,7 +118,7 @@ public class TestIndividuala {
 			float[] wynik_c = new float[1];
 			czas_c -= new Date().getTime();
 			ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr , wynik_c, 
-					LICZBA_PARTII, LICZBA_INTOW, LICZBA_WATKOW_NA_BLOK);
+					LICZBA_PARTII, LICZBA_INTOW, LICZBA_WATKOW_NA_BLOK, LICZBA_OSOBNIKOW);
 			czas_c += new Date().getTime();
 			
 			obliczany_osobnik.setObjectiveFunction(objective_function);
