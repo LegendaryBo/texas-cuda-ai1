@@ -20,8 +20,8 @@ extern void destruktorKodGraya(KodGraya *ptr);
 extern void destruktorRozdanie(Rozdanie *ptr);
 extern void destruktorHand(Hand *ptr);
 
-extern void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow);
-extern void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_watkow);
+extern void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_osobnikow);
+extern void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
 extern int **getIndividualPTRPTR(int size);
 extern void setIndividualPTR(int *osobnik, int **pointer, int index);
 
@@ -107,8 +107,8 @@ extern void destruktorKodGraya(KodGraya *IN);
 extern void destruktorRozdanie(Rozdanie *IN);
 extern void destruktorHand(Hand *IN);
 
-extern void rozegrajNGier(int ktory_nasz, int **IN, float *INOUT, int N, int liczba_intow);
-extern void rozegrajNGierCUDA(int ktory_nasz, int **IN, float *INOUT, int n, int liczba_intow, int liczba_watkow);
+extern void rozegrajNGier(int ktory_nasz, int **IN, float *INOUT, int N, int liczba_intow, int liczba_osobnikow);
+extern void rozegrajNGierCUDA(int ktory_nasz, int **IN, float *INOUT, int n, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
 extern int **getIndividualPTRPTR(int size);
 extern void setIndividualPTR(int *IN, int **IN, int index);
 

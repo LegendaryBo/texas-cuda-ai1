@@ -1,5 +1,7 @@
 package generator;
 
+import java.util.Random;
+
 import Gracze.gracz_v3.GeneratorRegulv3;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 
@@ -16,6 +18,10 @@ public class ProstyGeneratorLiczb extends Object {
 //	int d=54321;
 	
 	private int seed=0;
+	
+	public ProstyGeneratorLiczb() {
+		seed = Math.abs( new Random().nextInt() );
+	}
 	
 	public ProstyGeneratorLiczb(int aSeed) {
 		seed = aSeed;
