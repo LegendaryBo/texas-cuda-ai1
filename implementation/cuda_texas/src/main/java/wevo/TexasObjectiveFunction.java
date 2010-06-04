@@ -153,7 +153,7 @@ public class TexasObjectiveFunction implements
 				generator_individuali.reset();
 
 		} else {
-			generator_kolejnosci = new Random(43435);
+			generator_kolejnosci = new Random();
 			generator_gier = new Random(43435);
 		}
 
@@ -177,18 +177,18 @@ public class TexasObjectiveFunction implements
 			Gracz[] gracze = new Gracz[6];
 
 			for (int j = 0; j < 6; j++)
-				gracze[(j +i)%6] = new GraczAIv3(generator_individuali
+				gracze[j] = new GraczAIv3(generator_individuali
 						.generate(), j);
 
 			int random = generator_kolejnosci.nextInt(6);
-			if (trudnosc<0)
-				random=i%6;
+//			if (trudnosc<0)
+//				random=0;
 			GraczAIv3 gracz = new GraczAIv3(individual, random);
 			gracze[random] = gracz;
 
 			int nr_rozdania = generator_gier.nextInt();
-			if (trudnosc<0)
-				nr_rozdania = i;
+//			if (trudnosc<0)
+//				nr_rozdania = i;
 				
 			Gra gra = new Gra(gracze, nr_rozdania);
 			gra.play_round(false);
