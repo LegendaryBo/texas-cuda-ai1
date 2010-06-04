@@ -3,6 +3,10 @@ package wevo;
 import engine.TexasSettings;
 import generator.GeneratorGraczyZGeneracji;
 import generator.ProstyGeneratorLiczb;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import pl.wroc.uni.ii.evolution.engine.prototype.EvObjectiveFunction;
 import Gracze.gracz_v3.GeneratorRegulv3;
@@ -21,11 +25,12 @@ import cuda.swig.ai_texas_swig;
 public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryVectorIndividual> {
 
 	private static final long serialVersionUID = 8765187926167966922L;
-	private final int LICZBA_OSOBNIKOW = 100; // wiecej sie nie miesci na karte :(
+	private final int LICZBA_OSOBNIKOW; // wiecej sie nie miesci na karte :(
 	private final int LICZBA_GENOW = GeneratorRegulv3.rozmiarGenomu;
 	private final int LICZBA_INTOW = (GeneratorRegulv3.rozmiarGenomu - 1) / 32 + 1;
-	private final ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
-
+//	private final ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
+	private final Random random = new Random();
+	
 	private final int liczbaWatkowNaBlok;
 	private final int liczbaPartii;
 	private final SWIGTYPE_p_p_int osobniki_ptr;
@@ -45,7 +50,8 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 		TexasSettings.setTexasLibraryPath();
 		this.liczbaPartii = liczbaPartii;
 		this.liczbaWatkowNaBlok = liczbaWatkowNaBlok;
-		generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, liczbaGeneracji, true);
+		generator = new GeneratorGraczyZGeneracji(random.nextInt(), LICZBA_GENOW, liczbaGeneracji, true);
+		LICZBA_OSOBNIKOW = generator.lista.size();
 		osobniki_ptr = ai_texas_swig.getIndividualPTRPTR(LICZBA_OSOBNIKOW + 1);
 		init();
 	}
@@ -54,9 +60,10 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 	private void init() {
 		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
 		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
+		ArrayList<EvBinaryVectorIndividual> losowani = new ArrayList<EvBinaryVectorIndividual>(generator.lista);
 		for (int i = 0; i < LICZBA_OSOBNIKOW; i++) {
-			int losowaLiczba = random.nextInt(generator.lista.size());
-			osobniki_java[i] = generator.lista.get(losowaLiczba);
+			int losowa = random.nextInt(losowani.size());
+			osobniki_java[i] = losowani.remove(losowa);
 			osobniki[i] = osobniki_java[i].getGenes();
 		}
 
@@ -73,7 +80,7 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 		SWIGTYPE_p_int wskaznikDoPamieci = kopiujOsobnikaDoPamieci(obliczany_osobnik);
 
 		float[] wynik_cuda = new float[1]; // bo w swigu tak pokracznie sie zwraca wyniki :)
-		ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr, wynik_cuda, liczbaPartii, LICZBA_INTOW, liczbaWatkowNaBlok);
+		ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr, wynik_cuda, liczbaPartii, LICZBA_INTOW, liczbaWatkowNaBlok, LICZBA_OSOBNIKOW);
 
 		// usuwanie obliczonego osobnika z pamieci ram (jednak treningowe osobniki zostaja na zawsze!)
 		ai_texas_swig.destruktorInt(wskaznikDoPamieci);

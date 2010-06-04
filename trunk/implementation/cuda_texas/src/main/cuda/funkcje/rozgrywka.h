@@ -30,10 +30,10 @@ extern "C" {
 
 	void getBilans(Gra *gra,  float *output );
 
-	void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow);
+	void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_osobnikow);
 
-	void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float 
-*wynik, int N, int liczba_intow, int liczba_watkow);
+	void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float
+*wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
 
 	int **getIndividualPTRPTR(int size);
 
@@ -165,8 +165,8 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 
 		return output[0];
 	}
-	
-	
+
+
 	__host__ float rundaX_stawka_ai3HOST(Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 
 		float output[1];
@@ -187,8 +187,8 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 			aplikujStawkaRXDEVICE(&reguly->stawka_rx[runda-2], gra, ktoryGracz, &output[0]) ;
 		return output[0];
 	}
-	
-	
+
+
 	__host__ float rundaX_dobijanie_ai3HOST(float stawka,Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 
 		float output[1];
@@ -208,8 +208,8 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		if (runda>1)
 			aplikujDobijanieRXDEVICE(&reguly->dobijanie_rx[runda-2], gra, ktoryGracz, &output[0], stawka);
 		return output[0];
-	}	
-	
+	}
+
 	__host__ float rundaX_ileGrac_ai3HOST(float stawka, Gra *gra, int runda, int ktoryGracz, Reguly *reguly) {
 
 		float output[1];
@@ -247,11 +247,11 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		aplikujCzyGracR1DEVICE(&reguly->czy_grac_r1, gra, ktoryGracz, &output[0], 0.0);
 		return output[0];
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	__host__ float rundaX_stawka_ai3_r1HOST(Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujStawkaR1HOST(&reguly->stawka_r1, gra, ktoryGracz, &output[0]) ;
@@ -261,11 +261,11 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		float output[1];
 		aplikujStawkaR1DEVICE(&reguly->stawka_r1, gra, ktoryGracz, &output[0]) ;
 		return output[0];
-	}	
-	
-	
-	
-	
+	}
+
+
+
+
 	__host__  float rundaX_dobijanie_ai3_r1HOST(float stawka,Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujDobijanieR1HOST(&reguly->dobijanie_r1, gra, ktoryGracz, &output[0], stawka);
@@ -275,9 +275,9 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		float output[1];
 		aplikujDobijanieR1DEVICE(&reguly->dobijanie_r1, gra, ktoryGracz, &output[0], stawka);
 		return output[0];
-	}	
-	
-	
+	}
+
+
 	__host__  float rundaX_ileGrac_ai3_r1HOST(float stawka, Gra *gra, int runda, int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujIleGracR1HOST( &reguly->ile_grac_r1 , gra, ktoryGracz, &output[0], stawka);
@@ -299,10 +299,10 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		float output[1];
 		aplikujCzyGracRXDEVICE(&reguly->czy_grac_rx[runda-2], gra, ktoryGracz, &output[0], 0.0);
 		return output[0];
-	}	
-	
-	
-	
+	}
+
+
+
 	__host__ float rundaX_stawka_ai3_rxHOST(Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujStawkaRXHOST(&reguly->stawka_rx[runda-2], gra, ktoryGracz, &output[0]) ;
@@ -312,9 +312,9 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		float output[1];
 		aplikujStawkaRXDEVICE(&reguly->stawka_rx[runda-2], gra, ktoryGracz, &output[0]) ;
 		return output[0];
-	}	
-	
-	
+	}
+
+
 	__host__ float rundaX_dobijanie_ai3_rxHOST(float stawka,Gra *gra, int runda,  int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujDobijanieRXHOST(&reguly->dobijanie_rx[runda-2], gra, ktoryGracz, &output[0], stawka);
@@ -324,10 +324,10 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		float output[1];
 		aplikujDobijanieRXDEVICE(&reguly->dobijanie_rx[runda-2], gra, ktoryGracz, &output[0], stawka);
 		return output[0];
-	}	
-	
-	
-	
+	}
+
+
+
 	__host__ float rundaX_ileGrac_ai3_rxHOST(float stawka, Gra *gra, int runda, int ktoryGracz, Reguly *reguly) {
 		float output[1];
 		aplikujIleGracRXHOST( &reguly->ile_grac_rx[runda-2] , gra, ktoryGracz, &output[0], stawka);
@@ -471,7 +471,7 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 
 				float stawka = rundaX_stawka_ai3HOST(gra, i, indeks_gracza, reguly);
 				if (stawka < gra->stawka) {
-					
+
 					if (rundaX_dobijanie_ai3HOST(stawka,gra,i,indeks_gracza, reguly) == 1.0)
 						stawka = gra->stawka;
 					else {
@@ -578,7 +578,7 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 
 				float stawka = rundaX_stawka_ai3DEVICE(gra, i, indeks_gracza, reguly);
 				if (stawka < gra->stawka) {
-					
+
 					if (rundaX_dobijanie_ai3DEVICE(stawka,gra,i,indeks_gracza, reguly) == 1.0)
 						stawka = gra->stawka;
 					else {

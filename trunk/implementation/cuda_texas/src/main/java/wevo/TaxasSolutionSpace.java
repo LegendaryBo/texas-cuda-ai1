@@ -1,5 +1,6 @@
 package wevo;
 
+import generator.GeneratorGraczyZGeneracji;
 import generator.IndividualIO;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import pl.wroc.uni.ii.evolution.engine.prototype.EvSolutionSpace;
 public class TaxasSolutionSpace implements EvSolutionSpace<EvBinaryVectorIndividual> {
 
 
-  private ArrayList<EvBinaryVectorIndividual> lista = null;
+  public ArrayList<EvBinaryVectorIndividual> lista = null;
   private Random generatorLiczb;
   private EvObjectiveFunction<EvBinaryVectorIndividual> objFun;
 
@@ -22,8 +23,8 @@ public class TaxasSolutionSpace implements EvSolutionSpace<EvBinaryVectorIndivid
 
     lista  = new ArrayList<EvBinaryVectorIndividual>();
     for (int i=aGeneracjaPoczatkowa; i <= aGeneracjaKoncowa; i++) {
-        System.out.println("odczytuje plik "+"c:\\texas3\\generacja"+i+".dat");
-        lista.addAll( IndividualIO.odczytajZPliku("c:\\texas3\\generacja"+i+".dat") );
+
+        lista.addAll( IndividualIO.odczytajZPliku(GeneratorGraczyZGeneracji.SCIEZKA+"/generacja"+i+".dat") );
     }
   }
     
