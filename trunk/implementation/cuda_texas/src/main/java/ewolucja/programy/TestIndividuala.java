@@ -1,6 +1,8 @@
-package Gracze.gracz_v3;
+package ewolucja.programy;
 
 import java.util.Date;
+
+import Gracze.gracz_v3.GeneratorRegulv3;
 
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import wevo.TexasObjectiveFunction;
@@ -58,7 +60,7 @@ public class TestIndividuala {
 	}
 	
 	int LICZBA_PARTII=10000;
-	int LICZBA_WATKOW_NA_BLOK=8;	
+	int LICZBA_WATKOW_NA_BLOK=16;	
 	int LICZBA_TESTOW=10;
 	
 	@SuppressWarnings("deprecation")

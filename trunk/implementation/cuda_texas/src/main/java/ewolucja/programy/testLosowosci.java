@@ -1,4 +1,4 @@
-package ewolucja;
+package ewolucja.programy;
 
 import generator.IndividualGenerator;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
@@ -9,6 +9,8 @@ import Gracze.gracz_v3.GeneratorRegulv3;
 public class testLosowosci {
 
   /**
+   * Program losuje N osobnikow i sprawdza odchylenie w ich funkcji celu
+   * 
    * @param args
    */
   public static void main(String[] args) {

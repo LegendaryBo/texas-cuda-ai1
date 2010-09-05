@@ -1,4 +1,4 @@
-package ewolucja;
+package ewolucja.programy;
 
 import pl.wroc.uni.ii.evolution.engine.EvAlgorithm;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
@@ -10,7 +10,6 @@ import pl.wroc.uni.ii.evolution.engine.operators.spacespecific.knaryvector.EvKna
 import pl.wroc.uni.ii.evolution.engine.operators.spacespecific.knaryvector.binaryvector.EvBinaryVectorNegationMutation;
 import pl.wroc.uni.ii.evolution.engine.terminationconditions.EvMaxIteration;
 import wevo.TaxasSolutionSpace;
-import wevo.TexasIndividual;
 import wevo.TexasObjectiveFunction;
 import Gracze.gracz_v2.generatorRegul.GeneratorRegul;
 
@@ -23,12 +22,12 @@ import Gracze.gracz_v2.generatorRegul.GeneratorRegul;
  */
 public class selekcja_skrzyzowanie {
 
-  public static void main(String[] args) {
+  @SuppressWarnings("unchecked")
+public static void main(String[] args) {
     
     GeneratorRegul.init();
     TexasObjectiveFunction objective_function = new TexasObjectiveFunction(2000, 10, true, true);
     int populacja = 200;
-    int genes = GeneratorRegul.rozmiarGenomu;
     int iteracji = 100;
     
     EvAlgorithm<EvBinaryVectorIndividual> genericEA =
@@ -60,10 +59,7 @@ public class selekcja_skrzyzowanie {
   
     genericEA.init();
     genericEA.run();
-    System.out.println(TexasIndividual.describe(genericEA.getBestResult()));
-    
-    
-    
+
     
   }
   

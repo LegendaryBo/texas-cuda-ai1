@@ -1,4 +1,4 @@
-package ewolucja;
+package ewolucja.programy;
 
 import generator.IndividualGenerator;
 
@@ -7,6 +7,7 @@ import java.util.Arrays;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import wevo.TexasObjectiveFunction;
 import Gracze.gracz_v2.generatorRegul.GeneratorRegul;
+import Gracze.gracz_v3.GeneratorRegulv3;
 
 /**
  * 
@@ -23,7 +24,7 @@ public class testLosowychOsobnikow {
     
     TexasObjectiveFunction objective_function = new TexasObjectiveFunction(5000, 10 , true, false);
 
-    final int genes = GeneratorRegul.rozmiarGenomu;
+    final int genes = GeneratorRegulv3.rozmiarGenomu;
     final int LOSOWAN = 100000;
   
     IndividualGenerator generatorOsobnikow = new IndividualGenerator(124, genes);

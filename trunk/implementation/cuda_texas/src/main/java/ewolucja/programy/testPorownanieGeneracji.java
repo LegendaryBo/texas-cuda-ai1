@@ -1,26 +1,28 @@
-package ewolucja;
+package ewolucja.programy;
 
 import generator.GeneratorGraczyZGeneracji;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
 import wevo.TexasObjectiveFunction;
 import Gracze.gracz_v2.generatorRegul.GeneratorRegul;
 
-public final class statystykiPartii {
+public class testPorownanieGeneracji {
 
+  
+  
   /**
    * @param args
    */
   public static void main(String[] args) {
     
-    final int SPRAWDZANA_GENERACJA = 8;
-    final int GENERACJA_FUNKCJI_CELU = 4;
+    final int SPRAWDZANA_GENERACJA = 7;
+    final int GENERACJA_FUNKCJI_CELU = 9;
     final int ITERACJI = 20;
     
     GeneratorRegul.init();
     
     GeneratorGraczyZGeneracji generator = 
       new GeneratorGraczyZGeneracji(1144, GeneratorRegul.rozmiarGenomu, SPRAWDZANA_GENERACJA, true);  
-    TexasObjectiveFunction objective_function = new TexasObjectiveFunction(2000, GENERACJA_FUNKCJI_CELU, true, false);   
+    TexasObjectiveFunction objective_function = new TexasObjectiveFunction(5000, GENERACJA_FUNKCJI_CELU, false, false);   
     
     EvBinaryVectorIndividual individual = null;
     
@@ -40,5 +42,4 @@ public final class statystykiPartii {
     
     System.out.println("Sredni osobnik"+(srednia/ITERACJI));
   }
-
 }

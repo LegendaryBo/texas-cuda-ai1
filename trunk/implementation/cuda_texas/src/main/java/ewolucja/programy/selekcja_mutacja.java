@@ -1,4 +1,4 @@
-package ewolucja;
+package ewolucja.programy;
 
 import pl.wroc.uni.ii.evolution.engine.EvAlgorithm;
 import pl.wroc.uni.ii.evolution.engine.individuals.EvBinaryVectorIndividual;
@@ -9,19 +9,19 @@ import pl.wroc.uni.ii.evolution.engine.operators.spacespecific.knaryvector.binar
 import pl.wroc.uni.ii.evolution.engine.terminationconditions.EvMaxIteration;
 import wevo.TaxasSolutionSpace;
 import wevo.TexasObjectiveFunction;
-import Gracze.GraczAIv2;
 import Gracze.gracz_v2.generatorRegul.GeneratorRegul;
 
 /**
  * 
- * Program main robiacy ewolucje uzywajacej mutacji jako operatora ewolucyjnego
+ * Program main robiacy ewolucje, uzywajacej mutacji jako operatora ewolucyjnego
  * 
  * @author Kacper Gorski (railman85@gmail.com)
  *
  */
 public class selekcja_mutacja {
 
-  public static void main(String[] args) {
+  @SuppressWarnings("unchecked")
+public static void main(String[] args) {
     
     GeneratorRegul.init();
     
@@ -29,8 +29,6 @@ public class selekcja_mutacja {
     
     
     final int populacja = 100;
-    final int eliteSize = 30;
-    final int genes = GeneratorRegul.rozmiarGenomu;
     final int iteracji = 300;
 
     
@@ -62,38 +60,9 @@ public class selekcja_mutacja {
     genericEA.init();
     genericEA.run();
     
-    
-    EvBinaryVectorIndividual indi = genericEA.getBestResult();
-    GraczAIv2 ai = new GraczAIv2(indi, 0);
-    System.out.println(ai);
-//    String ret = new String();
-//    for (int i=0; i < 48; i++)
-//      ret +=indi.getGene(i);
-//    System.out.println(ret); 
-//    ret = "";
-//    for (int i=48; i < 107; i++)
-//      ret +=indi.getGene(i);
-//    System.out.println(ret);
-    
-    
-//    TexasObjectiveFunction function2 = new TexasObjectiveFunction(5000, 0);
-//    TexasObjectiveFunction function3 = new TexasObjectiveFunction(5000, 1);
-//    
-//    System.out.println(objective_function.getStats(genericEA.getBestResult()));
-//    System.out.println("");
-//    
-//    EvBinaryVectorIndividual ind = genericEA.getBestResult();
-//    ind.setObjectiveFunction(function2);
-//    
-//    System.out.println("trudnosc mala: "+ind.getObjectiveFunctionValue());
-//    System.out.println(function2.getStats(ind));    
-//    
-//    ind.setObjectiveFunction(function3);
-//    
-//    System.out.println("trudnosc srednia: "+ind.getObjectiveFunctionValue());
-//    System.out.println(function3.getStats(ind));     
-      
-    
+
+
+
     
   }
   
