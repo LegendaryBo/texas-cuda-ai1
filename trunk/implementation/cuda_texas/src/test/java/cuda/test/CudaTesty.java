@@ -67,9 +67,10 @@ public class CudaTesty extends TestCase {
 		Random random = new Random();
 		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
 		final int LICZBA_TESTOW=10;
+		final int LICZBA_WATKOW=750;
 		
 		final int LICZBA_INTOW= (GeneratorRegulv3.rozmiarGenomu-1)/32 +1;
-		final int LICZBA_PARTII=10000;
+		final int LICZBA_PARTII=50000;
 		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 11, true);
 		final int LICZBA_OSOBNIKOW=generator.lista.size();
 		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
@@ -103,7 +104,7 @@ public class CudaTesty extends TestCase {
 
 			float[] wynik_c = new float[1];
 			czas_c -= new Date().getTime();
-			ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr , wynik_c, LICZBA_PARTII, LICZBA_INTOW, 128, LICZBA_OSOBNIKOW);
+			ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr , wynik_c, LICZBA_PARTII, LICZBA_INTOW, LICZBA_WATKOW, LICZBA_OSOBNIKOW);
 			czas_c += new Date().getTime();
 			
 			obliczany_osobnik.setObjectiveFunction(objective_function);

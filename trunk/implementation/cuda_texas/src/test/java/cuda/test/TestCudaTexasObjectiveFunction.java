@@ -19,11 +19,12 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 	private CUDATexasObjectiveFunction cudaObjFunction = null;
 	private TexasObjectiveFunction cpuObjFunction = null;
 	
-	private final int LICZBA_GIER=10000;
+	private final int LICZBA_GIER=20000;
+	private final int LICZBA_WATKOW=768;
 	
 	public void setUp() {
 		GeneratorRegulv3.init();
-		cudaObjFunction = new CUDATexasObjectiveFunction(11, 128, LICZBA_GIER);
+		cudaObjFunction = new CUDATexasObjectiveFunction(11, LICZBA_WATKOW, LICZBA_GIER);
 		cpuObjFunction = new TexasObjectiveFunction(LICZBA_GIER);
 	}
 	
@@ -39,7 +40,7 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 	}
 	
 	public void testMultiTest() {
-		final int LICZBA_TESTOW=10;
+		final int LICZBA_TESTOW=30;
 		
 		double[] wyniki_java = new double[LICZBA_TESTOW];
 		double[] wyniki_c = new double[LICZBA_TESTOW];
@@ -48,7 +49,7 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 		
 		for (int i=0; i < LICZBA_TESTOW; i++) {
 			cudaObjFunction.usunOsobnikiTreningoweZPamieci();
-			cudaObjFunction = new CUDATexasObjectiveFunction(11, 128, LICZBA_GIER);
+			cudaObjFunction = new CUDATexasObjectiveFunction(11, LICZBA_WATKOW, LICZBA_GIER);
 			individual.setObjectiveFunction(cpuObjFunction);
 			wyniki_java[i] = individual.getObjectiveFunctionValue();
 			individual.setObjectiveFunction(cudaObjFunction);
@@ -68,7 +69,7 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 	public void atestDestruktorow() {
 		final int LICZBA_TESTOW=50;
 		for (int i=0; i < LICZBA_TESTOW; i++) {
-			cudaObjFunction = new CUDATexasObjectiveFunction(11, 128, 1000);
+			cudaObjFunction = new CUDATexasObjectiveFunction(11, LICZBA_WATKOW, 1000);
 			cudaObjFunction.usunOsobnikiTreningoweZPamieci();
 		}
 	}
