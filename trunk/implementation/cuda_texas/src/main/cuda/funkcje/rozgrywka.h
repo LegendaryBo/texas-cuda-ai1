@@ -10,6 +10,7 @@
 #include "../struktury/czy_grac_r1.h"
 #include "../struktury/czy_grac_rx.h"
 
+
 #include "../funkcje/generatory.h"
 
 #include "../funkcje/reguly_ilegrac.h"

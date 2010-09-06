@@ -41,37 +41,43 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 	}
 	
 	public void testMultiTest() {
-		final int LICZBA_TESTOW=20;
+	    
+	    final int LICZBA_OSOBNIKOW=0;
+	    for (int j=0; j <LICZBA_OSOBNIKOW; j++) {
+	    
+    		final int LICZBA_TESTOW=20;
+    		
+    		double[] wyniki_java = new double[LICZBA_TESTOW];
+    		double[] wyniki_c = new double[LICZBA_TESTOW];
+    		long czas_java=0;
+    		long czas_c=0;
+    		
+    		EvBinaryVectorIndividual individual = getRandomIndividualFromFile();
+    		
+    		for (int i=0; i < LICZBA_TESTOW; i++) {
+    			cudaObjFunction.usunOsobnikiTreningoweZPamieci();
+    			cudaObjFunction = new CUDATexasObjectiveFunction(11, LICZBA_WATKOW, LICZBA_GIER);
+    			individual.setObjectiveFunction(cpuObjFunction);
+    			czas_java -= new Date().getTime();
+    			wyniki_java[i] = individual.getObjectiveFunctionValue();
+    			czas_java += new Date().getTime();
+    			czas_c -= new Date().getTime();
+    			individual.setObjectiveFunction(cudaObjFunction);
+    			wyniki_c[i] = individual.getObjectiveFunctionValue();
+    			czas_c += new Date().getTime();
+//    			System.out.println("\ntest nr "+(i+1));
+//    			System.out.println(" wynik cpu "+wyniki_java[i]);
+//    			System.out.println(" wynik gpu "+wyniki_c[i]);
+    //			assertEquals(wynik_cpu, wynik_gpu, 500.0);
+    		}
+    		System.out.println("srednia java "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_java));
+    		System.out.println("srednia c "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_c));
+    		System.out.println("odchylenie java "+DaneStatystyczneUtils.getOdchylenie(wyniki_java));
+    		System.out.println("odchylenie c "+DaneStatystyczneUtils.getOdchylenie(wyniki_c));
+    		System.out.println("czas java: "+ czas_java/1000.0d + " s");
+    		System.out.println("czas c: "+ czas_c/1000.0d + " s");
 		
-		double[] wyniki_java = new double[LICZBA_TESTOW];
-		double[] wyniki_c = new double[LICZBA_TESTOW];
-		long czas_java=0;
-		long czas_c=0;
-		
-		EvBinaryVectorIndividual individual = getRandomIndividualFromFile();
-		
-		for (int i=0; i < LICZBA_TESTOW; i++) {
-			cudaObjFunction.usunOsobnikiTreningoweZPamieci();
-			cudaObjFunction = new CUDATexasObjectiveFunction(11, LICZBA_WATKOW, LICZBA_GIER);
-			individual.setObjectiveFunction(cpuObjFunction);
-			czas_java -= new Date().getTime();
-			wyniki_java[i] = individual.getObjectiveFunctionValue();
-			czas_java += new Date().getTime();
-			czas_c -= new Date().getTime();
-			individual.setObjectiveFunction(cudaObjFunction);
-			wyniki_c[i] = individual.getObjectiveFunctionValue();
-			czas_c += new Date().getTime();
-			System.out.println("\ntest nr "+(i+1));
-			System.out.println(" wynik cpu "+wyniki_java[i]);
-			System.out.println(" wynik gpu "+wyniki_c[i]);
-//			assertEquals(wynik_cpu, wynik_gpu, 500.0);
-		}
-		System.out.println("srednia java "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_java));
-		System.out.println("srednia c "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_c));
-		System.out.println("odchylenie java "+DaneStatystyczneUtils.getOdchylenie(wyniki_java));
-		System.out.println("odchylenie c "+DaneStatystyczneUtils.getOdchylenie(wyniki_c));
-		System.out.println("czas java: "+ czas_java/1000.0d + " s");
-		System.out.println("czas c: "+ czas_c/1000.0d + " s");
+	    }
 	}
 	
 	
@@ -96,7 +102,7 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 
 	private EvBinaryVectorIndividual getRandomIndividualFromFile() {		
 		TaxasSolutionSpace solutionSpace = new TaxasSolutionSpace(null, 1, 7);
-		int losowa = new Random(854311).nextInt( solutionSpace.lista.size() );
+		int losowa = new Random().nextInt( solutionSpace.lista.size() );
 		System.out.println("osonik: "+losowa);
 		return solutionSpace.lista.get(losowa );
 	}

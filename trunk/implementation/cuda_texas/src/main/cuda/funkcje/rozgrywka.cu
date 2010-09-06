@@ -16,6 +16,8 @@
 #include "../struktury/czy_grac_rx.h"
 #include "../struktury/reguly.h"
 #include "../struktury/zlecenie.h"
+#include "../struktury/generatorLosowych.h"
+#include "../funkcje/konstruktory_destruktory.h"
 
 
 #include "../funkcje/reguly_ilegrac.h"
@@ -34,6 +36,7 @@
 
 int rozmiar_genomu = 1234;
 //float minimal_bid = 10.0;
+
 
 
 

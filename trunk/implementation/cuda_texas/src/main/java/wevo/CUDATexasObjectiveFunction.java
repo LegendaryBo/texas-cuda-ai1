@@ -25,7 +25,7 @@ import cuda.swig.ai_texas_swig;
 public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryVectorIndividual> {
 
 	private static final long serialVersionUID = 8765187926167966922L;
-	private final int LICZBA_OSOBNIKOW; // wiecej sie nie miesci na karte :(
+	private final int LICZBA_OSOBNIKOW;
 	private final int LICZBA_GENOW = GeneratorRegulv3.rozmiarGenomu;
 	private final int LICZBA_INTOW = (GeneratorRegulv3.rozmiarGenomu - 1) / 32 + 1;
 //	private final ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
@@ -58,13 +58,11 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 
 	// funkcja kopiuje do pamieci RAM osobniki treningowe
 	private void init() {
-		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
+
 		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
 		ArrayList<EvBinaryVectorIndividual> losowani = new ArrayList<EvBinaryVectorIndividual>(generator.lista);
 		for (int i = 0; i < LICZBA_OSOBNIKOW; i++) {
-			int losowa = random.nextInt(losowani.size());
-			osobniki_java[i] = losowani.remove(losowa);
-			osobniki[i] = osobniki_java[i].getGenes();
+			osobniki[i] = losowani.remove(0).getGenes();
 		}
 
 		osobnikiTreningowe = new SWIGTYPE_p_int[osobniki.length];

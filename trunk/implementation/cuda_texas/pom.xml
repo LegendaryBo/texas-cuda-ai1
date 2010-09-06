@@ -113,6 +113,21 @@
             </configuration>
           </execution> 
           
+          
+                    <!-- translacja pliku texas_swig.i na C i jave -->
+          <execution>
+            <id>3</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <packageName>cuda.swig</packageName>
+              <force>true</force> <!-- bez forced cos nie chce sie odswiezac-->
+              <source>generator_liczb_losowych.i</source> 
+            </configuration>
+          </execution> 
+          
+          
         </executions>
       </plugin>
       
