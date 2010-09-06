@@ -17,7 +17,7 @@ install: test lib
 
 #to jest biblioteka CUDA (dla JNI)
 lib: rozgrywka.o 
-	nvcc -shared $(CUDA_LIB) $(FLAGS) $(JAVA) $(SWIG_C_FILES_DIR)/texas_swig.c $(SWIG_C_FILES_DIR)/ai_texas_swig.c rozgrywka.o  -o libtests_texas.so
+	nvcc -shared $(CUDA_LIB) $(FLAGS) $(JAVA) $(SWIG_C_FILES_DIR)/texas_swig.c $(SWIG_C_FILES_DIR)/generator_liczb_losowych.c  $(SWIG_C_FILES_DIR)/ai_texas_swig.c rozgrywka.o  -o libtests_texas.so
 
 #to jest standalone program C++ do obliczania osobnikow
 test:
