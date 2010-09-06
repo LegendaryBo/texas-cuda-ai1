@@ -50,9 +50,7 @@ public abstract class EvIndividual
   /**
    * Get first objective function.
    * @return the objective_function
-   * @deprecated Recommend to use getObjectiveFunction(int)
    */
-  @Deprecated
   public EvObjectiveFunction getObjectiveFunction() {
     return getObjectiveFunction(0);
   }
@@ -87,7 +85,6 @@ public abstract class EvIndividual
   /**
    * Remove all objective function and set new one on the first positon.
    * @param objective_function_ new objective function.
-   * @deprecated Recommend to use setObjectiveFunction(EvObjectiveFunction,int)
    */
   public void setObjectiveFunction(final EvObjectiveFunction 
      objective_function_) {
@@ -136,7 +133,6 @@ public abstract class EvIndividual
   /**
    * getter.
    * @return the objective_function_value
-   * @deprecated Recommend to use getObjectiveFunctionValue(int)
    */
   public double getObjectiveFunctionValue() {
     return getObjectiveFunctionValue(0);
