@@ -158,7 +158,8 @@ public class GeneratorRozdan {
 
 		for (int i = 0; i < 5; i++) {
 			int numer_karty = generator.nextInt(kart);
-			//System.out.println(numer_karty);
+			
+		
 			publiczny_stos[i] = talia[numer_karty];
 			kart--;
 			talia[numer_karty] = talia[kart];

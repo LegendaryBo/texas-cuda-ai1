@@ -62,7 +62,7 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
 		ArrayList<EvBinaryVectorIndividual> losowani = new ArrayList<EvBinaryVectorIndividual>(generator.lista);
 		for (int i = 0; i < LICZBA_OSOBNIKOW; i++) {
-			osobniki[i] = losowani.remove(0).getGenes();
+			osobniki[i] = losowani.get(i).getGenes();
 		}
 
 		osobnikiTreningowe = new SWIGTYPE_p_int[osobniki.length];

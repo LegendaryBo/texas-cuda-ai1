@@ -53,11 +53,11 @@ Gra *getGraPTR() {
 
 
 
-int getJakisHashcode(int *osobnik, int dimension) {
+__device__  int getJakisHashcode(int *osobnik, int dimension) {
 
 	int wynik=13;
 	for (int i=0; i < dimension; i++) {
-		if (getBitHOST(osobnik, i)  == 1)
+		if (getBitDEVICE(osobnik, i)  == 1)
 			wynik = wynik*183 +191;
 		else
 			wynik = wynik*521 + 31;
@@ -165,6 +165,26 @@ void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int licz
 //static __constant__ int osobniki_const[256*64];
 
 
+// metoda sprawdza, czy wystapil w GPU jakis blad
+void obsluzBlad(const char *msg)
+{
+    cudaError_t err = cudaGetLastError();
+    if( cudaSuccess != err) // sprawdzamy, czy blad wystapil
+    {
+        fprintf(stderr, "Blad Cuda : %s: %s.\n", msg,
+                                  cudaGetErrorString( err) );
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+
+
+
+
+
+
+
 
 __global__ void obliczZlecenie(int liczbaGier, Zlecenie *zlecenia_cuda, float *wyniki_device, int ile_intow, Gra *gra, Reguly *reguly,
 int *osobniki, int LICZBA_OSOBNIKOW) {
@@ -180,7 +200,9 @@ int *osobniki, int LICZBA_OSOBNIKOW) {
 	  return;
 
 	(zlecenia_cuda + nr_zlecenia ) -> osobniki = &osobniki[0];
-	(zlecenia_cuda + nr_zlecenia ) -> nrRozdania = nr_zlecenia;
+
+
+
 
 	int seed = nr_zlecenia;
 	int losowe[5];
@@ -192,65 +214,70 @@ int *osobniki, int LICZBA_OSOBNIKOW) {
 	}
 
 
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[0] = LICZBA_OSOBNIKOW;
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[1] = (losowe[0])%LICZBA_OSOBNIKOW;
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[2] = (losowe[1])%LICZBA_OSOBNIKOW;
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[3] = (losowe[2])%LICZBA_OSOBNIKOW;
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[4] = (losowe[3])%LICZBA_OSOBNIKOW;
-	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[5] = (losowe[4])%LICZBA_OSOBNIKOW;
+//	printf("rozdanie nr %d \n", nr_zlecenia);
+//	printf("nr rozdania: %d \n ", (zlecenia_cuda + nr_zlecenia ) -> nrRozdania);
+//	for (int i=0; i < 6; i++) {
+//		printf("hash osobnika %d ",i);
+//		int osobnik = (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[i];
+//		printf("osobnik %d \n", osobnik);
+//		int hashCode = getJakisHashcode( &osobniki[0] + osobnik *  ile_intow, ile_intow*32  );
+//		printf(" : %d \n ",hashCode);
+//	}
+//
+//	printf("indeks osobnika 0 %d \n",
+//			  (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[0] );
+//	printf("indeks osobnika 1 %d \n",(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[1]);
+//	printf("indeks osobnika 2 %d \n",(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[2]);
+//	printf("indeks osobnika 3 %d \n",(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[3]);
+//	printf("indeks osobnika 4 %d \n",(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[4]);
+//	printf("indeks osobnika 5 %d \n",(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[5]);
 
-	(zlecenia_cuda + nr_zlecenia ) -> indexGracza = LICZBA_OSOBNIKOW;
+
+//	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[1] = (losowe[0])%LICZBA_OSOBNIKOW;
+//	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[2] = (losowe[1])%LICZBA_OSOBNIKOW;
+//	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[3] = (losowe[2])%LICZBA_OSOBNIKOW;
+//	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[4] = (losowe[3])%LICZBA_OSOBNIKOW;
+//	(zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[5] = (losowe[4])%LICZBA_OSOBNIKOW;
+//	(zlecenia_cuda + nr_zlecenia ) -> indexGracza = LICZBA_OSOBNIKOW;
 //	printf("indeks pierwszego osobnika %d \n",(nr_zlecenia*6 + 1)%100);
 
 	//__shared__ Gra gra[4];
 
 	nowaGra(   &osobniki[0] + LICZBA_OSOBNIKOW *  ile_intow ,
-			&osobniki[0] + (losowe[0])%LICZBA_OSOBNIKOW *  ile_intow,
-			&osobniki[0] + (losowe[1])%LICZBA_OSOBNIKOW *  ile_intow,
-			&osobniki[0] + (losowe[2])%LICZBA_OSOBNIKOW *  ile_intow,
-			&osobniki[0] + (losowe[3])%LICZBA_OSOBNIKOW *  ile_intow,
-			&osobniki[0] + (losowe[4])%LICZBA_OSOBNIKOW *  ile_intow,
-			nr_zlecenia, 3, &gra[nr_zlecenia]);
+			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[1]         *  ile_intow,
+			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[2]         *  ile_intow,
+			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[3]         *  ile_intow,
+			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[4]         *  ile_intow,
+			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[5]         *  ile_intow,
+			(zlecenia_cuda + nr_zlecenia ) -> nrRozdania , 3, &gra[nr_zlecenia]);
 
-	int ktoryGraczNasz = nr_zlecenia%6;
-	if ( nr_zlecenia < 0 )
-		ktoryGraczNasz = (-nr_zlecenia)%6;
+//	wypiszRozdanie(    &(gra + nr_zlecenia)->rozdanie   );
 
-	float bla = rozegrajPartieDEVICE(&gra[nr_zlecenia], nr_zlecenia%6, reguly);
+//	int ktoryGraczNasz = nr_zlecenia%6;
+//	if ( nr_zlecenia < 0 )
+//		ktoryGraczNasz = (-nr_zlecenia)%6;
 
-//	int spasowani[6];
-//	int wygrani[6];
-//	for (int i=0; i < 6; i++)
-//		spasowani[i]=0;
-//	int ile = wygrany(& ( gra[nr_zlecenia].rozdanie ),
-//			&spasowani[0],
-//			&wygrani[0]);
-//
-//	float bla=rozegrajPartie(&gra[nr_zlecenia], 0, reguly);
-//
-//	for  (int i=0; i < ile; i++) {
-//		bla += wygrani[i] * wygrani[i];
-//	}
+	float bla = rozegrajPartieDEVICE(&gra[nr_zlecenia], 0, reguly);
 
-
-//	printf("wynik to %f \n", bla);
-	//wyniki_device[ nr_zlecenia ] = bla;
-
+//	printf("wynik gry: %f \n ", bla);
 	wyniki_device[ nr_zlecenia ] = bla;
 
 
 }
 
-// metoda sprawdza, czy wystapil w GPU jakis blad
-void obsluzBlad(const char *msg)
-{
-    cudaError_t err = cudaGetLastError();
-    if( cudaSuccess != err) // sprawdzamy, czy blad wystapil
-    {
-        fprintf(stderr, "Blad Cuda : %s: %s.\n", msg,
-                                  cudaGetErrorString( err) );
-        exit(EXIT_FAILURE);
-    }
+
+
+
+
+void setUpZlecen(Zlecenie *zlecenia, int N, GeneratorLosowych *generator, int LICZBA_OSOBNIKOW, GeneratorLosowych *generatorRozdan ) {
+	for (int i=0; i < N; i++) {
+		(zlecenia + i ) -> nrRozdania = nextInt( generatorRozdan );
+		(zlecenia + i ) -> indexGracza= nextInt( generatorRozdan );
+		(zlecenia + i ) ->  indexOsobnika[0] = LICZBA_OSOBNIKOW;
+		for (int j=1; j <=5;  j++ ) {
+			(zlecenia + i ) ->  indexOsobnika[j] = nextInt( generator ) % LICZBA_OSOBNIKOW;
+		}
+	}
 }
 
 
@@ -292,9 +319,20 @@ int liczba_intow, int block_size, int LICZBA_OSOBNIKOW) {
 	float *wyniki_host;
 	wyniki_host = (float *)malloc( size_wyniki );
 
+
 	Zlecenie *zlecenia_cuda;
+	Zlecenie *zlecenia_host;
+
+
+	GeneratorLosowych *generator = getGeneratorLosowych();
+	GeneratorLosowych *generatorRozdan = getGeneratorLosowych();
 	size_t size_zlecenie = sizeof(Zlecenie)*N;
 	cudaMalloc((void **) &zlecenia_cuda, size_zlecenie);
+	zlecenia_host = (Zlecenie *)malloc( size_zlecenie );
+	setUpZlecen( zlecenia_host, N, generator, LICZBA_OSOBNIKOW, generatorRozdan );
+
+	printf( "rozmiar kopiowanej pamieci %d \n " , sizeof(Zlecenie)*N );
+	cudaMemcpy(zlecenia_cuda, zlecenia_host, sizeof(Zlecenie)*N, cudaMemcpyHostToDevice);
 
 	int *osobniki_cuda;
 	size_t size_osobniki = liczba_intow*sizeof(int)*(LICZBA_OSOBNIKOW+1);

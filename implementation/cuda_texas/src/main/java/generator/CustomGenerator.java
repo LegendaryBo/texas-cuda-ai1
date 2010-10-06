@@ -40,7 +40,7 @@ public class CustomGenerator {
 
 
 		seed = (seed * 12991 + 127)%12345789;
-		
+	
 		return wylosowana%ograniczenie;
 	}
 

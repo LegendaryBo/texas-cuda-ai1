@@ -84,17 +84,14 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 			int *gracz4_geny, int *gracz5_geny, int *gracz6_geny,
 			int nr_rozdania, int mode, Gra *gra) {
 
-		int shift=nr_rozdania;
-		if (nr_rozdania<0)
-			shift=-nr_rozdania;
 
 		gra->mode = mode;
-		gra->gracze[(0+shift%6)%6].geny = gracz1_geny;
-		gra->gracze[(1+shift%6)%6].geny = gracz2_geny;
-		gra->gracze[(2+shift%6)%6].geny = gracz3_geny;
-		gra->gracze[(3+shift%6)%6].geny = gracz4_geny;
-		gra->gracze[(4+shift%6)%6].geny = gracz5_geny;
-		gra->gracze[(5+shift%6)%6].geny = gracz6_geny;
+		gra->gracze[0].geny = gracz1_geny;
+		gra->gracze[1].geny = gracz2_geny;
+		gra->gracze[2].geny = gracz3_geny;
+		gra->gracze[3].geny = gracz4_geny;
+		gra->gracze[4].geny = gracz5_geny;
+		gra->gracze[5].geny = gracz6_geny;
 
 		for (int i = 0; i < 6; i++) {
 			gra->gracze[i].bilans = 0.0;
@@ -110,12 +107,55 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 		gra->graczyWGrze = 6;
 		int bla=nr_rozdania;
 		generuj(nr_rozdania, &gra->rozdanie, &bla);
+
+
+
 		gra->kto_podbil = -1;
 
 	}
 	;
 
+	void wypiszKarte(Karta *karta) {
 
+		if (karta->wysokosc >= 2 && karta->wysokosc <= 10)
+			printf("%d ", karta->wysokosc);
+		if ( karta->wysokosc == 11 )
+			printf("walet ");
+		if ( karta->wysokosc == 12 )
+			printf("dama ");
+		if ( karta->wysokosc == 13 )
+			printf("krol ");
+		if ( karta->wysokosc == 14 )
+			printf("as ");
+
+		if (karta->kolor == 1)
+			printf("pik");
+		if (karta->kolor == 2)
+			printf("trefl");
+		if (karta->kolor == 3)
+			printf("kier");
+		if (karta->kolor == 4)
+			printf("karo");
+
+	};
+
+
+	void wypiszRozdanie(Rozdanie *rozdanie) {
+		printf("publiczne karty: ");
+		for (int i=0; i < 5; i++) {
+			wypiszKarte( &rozdanie->karty_publiczne[i] );
+			printf("  ");
+		}
+		printf("\n");
+
+		for (int i=0; i < 6; i++) {
+			printf("prywatne karty gracza nr %d : ", i);
+			wypiszKarte( &rozdanie->karty_prywatne[i][0] );
+			printf("  ");
+			wypiszKarte( &rozdanie->karty_prywatne[i][1] );
+			printf(" \n");
+		}
+	}
 
 
 
