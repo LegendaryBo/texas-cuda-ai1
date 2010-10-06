@@ -21,7 +21,7 @@ public class TestGeneratorLiczbLosowychSpodC extends TestCase {
             assertTrue(wylosowana>=0);
         }
         assertTrue(powtorzenia<5);
-        System.out.println(powtorzenia);
+
     }
     
     public void testTakieSameLiczby() {
@@ -35,5 +35,15 @@ public class TestGeneratorLiczbLosowychSpodC extends TestCase {
         }
 
     }
+    
+    public void testIdentyczneLosowania() {
+	    GeneratorLiczbLosowychSpodC generatorC = new GeneratorLiczbLosowychSpodC();
+	    GeneratorLiczbLosowychSpodJava generatorJava = new GeneratorLiczbLosowychSpodJava();
+	    final int LICZBA_TESTOW=1000;
+	    for (int i=0; i < 1000; i++) {
+		    assertEquals(generatorC.nextInt(), generatorJava.nextInt());
+	    }
+    }
+    
     
 }

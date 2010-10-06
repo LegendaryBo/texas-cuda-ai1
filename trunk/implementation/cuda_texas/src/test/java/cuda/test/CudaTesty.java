@@ -67,10 +67,10 @@ public class CudaTesty extends TestCase {
 		Random random = new Random();
 		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
 		final int LICZBA_TESTOW=10;
-		final int LICZBA_WATKOW=750;
+		final int LICZBA_WATKOW=200;
 		
 		final int LICZBA_INTOW= (GeneratorRegulv3.rozmiarGenomu-1)/32 +1;
-		final int LICZBA_PARTII=50000;
+		final int LICZBA_PARTII=5000;
 		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 11, true);
 		final int LICZBA_OSOBNIKOW=generator.lista.size();
 		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];

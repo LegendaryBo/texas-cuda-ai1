@@ -3,6 +3,7 @@ package wevo;
 import engine.Gra;
 import engine.rezultaty.Rezultat;
 import generator.GeneratorGraczyZGeneracji;
+import generator.GeneratorLiczbLosowychSpodJava;
 import generator.IndividualGenerator;
 import generator.ProstyGeneratorLiczb;
 import generator.SimpleIndividualGenerator;
@@ -57,16 +58,18 @@ public class TexasObjectiveFunction implements
 		this(games_, -1, false, false);
 
 		final int LICZBA_GENOW=GeneratorRegulv3.rozmiarGenomu;
-		final int LICZBA_OSOBNIKOW=100;
+
 		GeneratorGraczyZGeneracji generator = new GeneratorGraczyZGeneracji(1234, LICZBA_GENOW, 11, true);
+		final int LICZBA_OSOBNIKOW=generator.lista.size();
 		EvBinaryVectorIndividual[] osobniki_java = new EvBinaryVectorIndividual[LICZBA_OSOBNIKOW];
 		ProstyGeneratorLiczb random = new ProstyGeneratorLiczb(465);
-		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
+//		int[][] osobniki = new int[LICZBA_OSOBNIKOW][];
 		for (int i=0; i < LICZBA_OSOBNIKOW; i++) {
-			int losowaLiczba = random.nextInt( generator.lista.size() );
-			osobniki_java[i] = generator.lista.get( losowaLiczba );
+//			int losowaLiczba = random.nextInt( generator.lista.size() );
+			osobniki_java[i] = generator.lista.get( i );
 		}
 		
+		generator_gier = new GeneratorLiczbLosowychSpodJava();
 		generator_individuali = new SimpleIndividualGenerator(games_, LICZBA_GENOW, osobniki_java);
 	}
 	
@@ -154,7 +157,7 @@ public class TexasObjectiveFunction implements
 
 		} else {
 			generator_kolejnosci = new Random();
-			generator_gier = new Random(43435);
+//			generator_gier = new Random(43435);
 		}
 
 		double bilans = 0;
@@ -176,23 +179,33 @@ public class TexasObjectiveFunction implements
 
 			Gracz[] gracze = new Gracz[6];
 
-			for (int j = 0; j < 6; j++)
+			for (int j = 1; j < 6; j++)
 				gracze[j] = new GraczAIv3(generator_individuali
 						.generate(), j);
 
-			int random = generator_kolejnosci.nextInt(6);
+//			int random = generator_kolejnosci.nextInt(6);
+			int random=0;
+//			gracze[j]
 //			if (trudnosc<0)
 //				random=0;
 			GraczAIv3 gracz = new GraczAIv3(individual, random);
 			gracze[random] = gracz;
+			
+//			System.out.println("gra nr i "+i);
+//			for (int j = 0; j < 6; j++) {
+//				System.out.println("javahash osobnika nr "+j+ " : " + ((GraczAIv3)gracze[j]).individual.getJakisHashcode());
+//			}
 
 			int nr_rozdania = generator_gier.nextInt();
+//			System.out.println(nr_rozdania);
 //			if (trudnosc<0)
 //				nr_rozdania = i;
 				
 			Gra gra = new Gra(gracze, nr_rozdania);
 			gra.play_round(false);
-
+//			System.out.println(gra.rozdanie.toString());
+//			System.out.println(gracz.bilans);
+//			System.out.println("nas gracz ma nr "+random);
 			bilans += gracz.bilans;
 //			boolean[] spasowanie = new boolean[6];
 //			int[] wygraniii = Gra.sprawdzenie_kart(spasowanie, gra.rozdanie);
@@ -203,9 +216,7 @@ public class TexasObjectiveFunction implements
 			if (LOGI)
 			System.out.println("bilans java po "+(i+1)+" grach:"+bilans/games);
 //			
-//			for (int j=1; j < 6; j++)
-//				System.out.print( " hash"+(j+1)+"="+((GraczAIv3)gracze[j]).individual.getJakisHashcode() );
-//			
+//		
 //			System.out.println();
 			
 			if (gracz.bilans < 0 && !gra.pass[random]) {
@@ -371,6 +382,9 @@ public class TexasObjectiveFunction implements
 			gracze[random] = gracz;
 
 			Gra gra = new Gra(gracze, generator_gier.nextInt());
+		
+	
+			
 			gra.play_round(false);
 			bilans += gracz.bilans;
 			

@@ -8,7 +8,6 @@ typedef struct {
 	int m_z;
 	int m_w;
 
-	int dlugosc;
 } GeneratorLosowych;
 
 
