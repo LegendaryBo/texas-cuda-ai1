@@ -4,6 +4,16 @@ import java.util.Random;
 
 public class GeneratorLiczbLosowychSpodJava extends Random {
 
+    private static final long serialVersionUID = 3838932196367739147L;
+
+    public GeneratorLiczbLosowychSpodJava() {
+        
+    }
+    public GeneratorLiczbLosowychSpodJava(int initNumber) {
+        m_z=7542*initNumber+7;
+        m_w=92465*initNumber+3;
+    }
+    
 	private int m_z=7542;
 	private int m_w=92465;
 

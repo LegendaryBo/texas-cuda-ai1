@@ -36,6 +36,9 @@ extern "C" {
 	void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float
 *wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
 
+	void rozegrajNGierCUDAwithSeed(int ktory_nasz, int **osobniki, float
+*wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow, int initNumber);
+
 	int **getIndividualPTRPTR(int size);
 
 	void setIndividualPTR(int *IN, int **IN, int index);
@@ -115,7 +118,7 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 	}
 	;
 
-	void wypiszKarte(Karta *karta) {
+	__device__ __host__ void wypiszKarte(Karta *karta) {
 
 		if (karta->wysokosc >= 2 && karta->wysokosc <= 10)
 			printf("%d ", karta->wysokosc);
@@ -140,7 +143,7 @@ __device__ __host__  int wygrany(Rozdanie *rozdanie, int *spasowani, int *wygran
 	};
 
 
-	void wypiszRozdanie(Rozdanie *rozdanie) {
+	__device__ __host__ void wypiszRozdanie(Rozdanie *rozdanie) {
 		printf("publiczne karty: ");
 		for (int i=0; i < 5; i++) {
 			wypiszKarte( &rozdanie->karty_publiczne[i] );

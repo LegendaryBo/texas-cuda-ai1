@@ -20,8 +20,8 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
 	private CUDATexasObjectiveFunction cudaObjFunction = null;
 	private TexasObjectiveFunction cpuObjFunction = null;
 	
-	private final int LICZBA_GIER=10000;
-	private final int LICZBA_WATKOW=10;
+	private final int LICZBA_GIER=50000;
+	private final int LICZBA_WATKOW=128;
 	
 	public void setUp() {
 		GeneratorRegulv3.init();
@@ -68,7 +68,7 @@ public class TestCudaTexasObjectiveFunction extends TestCase {
     			System.out.println("\ntest nr "+(i+1));
     			System.out.println(" wynik cpu "+wyniki_java[i]);
     			System.out.println(" wynik gpu "+wyniki_c[i]);
-//    			assertEquals(wynik_cpu, wynik_gpu, 500.0);
+    			assertEquals(wyniki_java[i], wyniki_c[i], 10.0);
     		}
     		System.out.println("srednia java "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_java));
     		System.out.println("srednia c "+DaneStatystyczneUtils.getSredniaWartosc(wyniki_c));
