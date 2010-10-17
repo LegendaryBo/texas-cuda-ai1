@@ -33,8 +33,14 @@ public class IndividualGenerator {
     return new EvBinaryVectorIndividual(genes,size);
     
   }
-
   public void reset() {
+      // TODO Auto-generated method stub
+      throw new IllegalStateException("kurwa");
+      
+      
+    }
+  
+  public void reset(int randomSeed) {
     // TODO Auto-generated method stub
     throw new IllegalStateException("kurwa");
     

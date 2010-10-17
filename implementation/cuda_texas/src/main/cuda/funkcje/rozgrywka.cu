@@ -250,7 +250,7 @@ int *osobniki, int LICZBA_OSOBNIKOW) {
 			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[4]         *  ile_intow,
 			&osobniki[0] +       (zlecenia_cuda + nr_zlecenia ) -> indexOsobnika[5]         *  ile_intow,
 			(zlecenia_cuda + nr_zlecenia ) -> nrRozdania , 3, &gra[nr_zlecenia]);
-
+//   printf("nr rozdania: %d \n", (zlecenia_cuda + nr_zlecenia ) -> nrRozdania);
 //	wypiszRozdanie(    &(gra + nr_zlecenia)->rozdanie   );
 
 //	int ktoryGraczNasz = nr_zlecenia%6;
@@ -269,10 +269,11 @@ int *osobniki, int LICZBA_OSOBNIKOW) {
 
 
 
-void setUpZlecen(Zlecenie *zlecenia, int N, GeneratorLosowych *generator, int LICZBA_OSOBNIKOW, GeneratorLosowych *generatorRozdan ) {
+void setUpZlecen(Zlecenie *zlecenia, int N, GeneratorLosowych *generator, int LICZBA_OSOBNIKOW, GeneratorLosowych *generatorRozdan
+			, GeneratorLosowych *generatorKolejnosci ) {
 	for (int i=0; i < N; i++) {
 		(zlecenia + i ) -> nrRozdania = nextInt( generatorRozdan );
-		(zlecenia + i ) -> indexGracza= nextInt( generatorRozdan );
+		//(zlecenia + i ) -> indexGracza = nextInt( generatorKolejnosci );
 		(zlecenia + i ) ->  indexOsobnika[0] = LICZBA_OSOBNIKOW;
 		for (int j=1; j <=5;  j++ ) {
 			(zlecenia + i ) ->  indexOsobnika[j] = nextInt( generator ) % LICZBA_OSOBNIKOW;
@@ -283,8 +284,9 @@ void setUpZlecen(Zlecenie *zlecenia, int N, GeneratorLosowych *generator, int LI
 
 
 
-void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float *wynik, int N,
-int liczba_intow, int block_size, int LICZBA_OSOBNIKOW) {
+
+void rozegrajNGierCUDAwithSeed(int ktory_nasz, int **osobniki, float *wynik, int N,
+int liczba_intow, int block_size, int LICZBA_OSOBNIKOW, int initNumber) {
 
 
 	putenv("CUDA_PROFILE=1");
@@ -324,14 +326,15 @@ int liczba_intow, int block_size, int LICZBA_OSOBNIKOW) {
 	Zlecenie *zlecenia_host;
 
 
-	GeneratorLosowych *generator = getGeneratorLosowych();
-	GeneratorLosowych *generatorRozdan = getGeneratorLosowych();
+	GeneratorLosowych *generator = getGeneratorLosowychWithSeed(initNumber);
+	GeneratorLosowych *generatorRozdan = getGeneratorLosowychWithSeed(initNumber);
+	GeneratorLosowych *generatorKolejnosci = getGeneratorLosowychWithSeed(initNumber);
 	size_t size_zlecenie = sizeof(Zlecenie)*N;
 	cudaMalloc((void **) &zlecenia_cuda, size_zlecenie);
 	zlecenia_host = (Zlecenie *)malloc( size_zlecenie );
-	setUpZlecen( zlecenia_host, N, generator, LICZBA_OSOBNIKOW, generatorRozdan );
+	setUpZlecen( zlecenia_host, N, generator, LICZBA_OSOBNIKOW, generatorRozdan, generatorKolejnosci );
 
-	printf( "rozmiar kopiowanej pamieci %d \n " , sizeof(Zlecenie)*N );
+	//printf( "rozmiar kopiowanej pamieci %d \n " , sizeof(Zlecenie)*N );
 	cudaMemcpy(zlecenia_cuda, zlecenia_host, sizeof(Zlecenie)*N, cudaMemcpyHostToDevice);
 
 	int *osobniki_cuda;
@@ -366,13 +369,28 @@ int liczba_intow, int block_size, int LICZBA_OSOBNIKOW) {
 		//printf("ma wynik %f ", (suma/N) );
 	}
 
+	cudaFree(gry_cuda);
+	cudaFree(wyniki_device);
+	cudaFree(reguly_cuda);
+	cudaFree(osobniki_cuda);
+	cudaFree(zlecenia_cuda);
+
+	free(osobniki_statyczna_tablica);
+	//free(zlecenia_host);
+
+	destruktorGeneratoraLosowych(generator);
+	destruktorGeneratoraLosowych(generatorRozdan);
+	destruktorGeneratoraLosowych(generatorKolejnosci);
+
 	wynik[0] = suma/N;
 }
 
 
 
 
-
+void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int block_size, int LICZBA_OSOBNIKOW) {
+	return rozegrajNGierCUDAwithSeed(ktory_nasz, osobniki, wynik, N, liczba_intow, block_size, LICZBA_OSOBNIKOW, 1);
+}
 
 
 

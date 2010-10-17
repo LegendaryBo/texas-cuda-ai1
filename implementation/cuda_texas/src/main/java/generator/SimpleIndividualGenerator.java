@@ -12,7 +12,10 @@ public class SimpleIndividualGenerator extends IndividualGenerator {
 		this.osobniki = osobniki;
 	}
 	
-
+	public void reset(int randomSeed) {
+	    generator = new GeneratorLiczbLosowychSpodJava(randomSeed);
+	}
+ 
 	@Override
 	public EvBinaryVectorIndividual generate() {
 		int random = generator.nextInt();

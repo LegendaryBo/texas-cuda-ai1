@@ -73,12 +73,14 @@ public class CUDATexasObjectiveFunction implements EvObjectiveFunction<EvBinaryV
 		}
 	}
 
+	static int seed=53;
 	public double evaluate(EvBinaryVectorIndividual obliczany_osobnik) {
 
 		SWIGTYPE_p_int wskaznikDoPamieci = kopiujOsobnikaDoPamieci(obliczany_osobnik);
 
 		float[] wynik_cuda = new float[1]; // bo w swigu tak pokracznie sie zwraca wyniki :)
-		ai_texas_swig.rozegrajNGierCUDA(LICZBA_OSOBNIKOW, osobniki_ptr, wynik_cuda, liczbaPartii, LICZBA_INTOW, liczbaWatkowNaBlok, LICZBA_OSOBNIKOW);
+		ai_texas_swig.rozegrajNGierCUDAwithSeed(LICZBA_OSOBNIKOW, osobniki_ptr, wynik_cuda, liczbaPartii, 
+		            LICZBA_INTOW, liczbaWatkowNaBlok, LICZBA_OSOBNIKOW, seed++);
 
 		// usuwanie obliczonego osobnika z pamieci ram (jednak treningowe osobniki zostaja na zawsze!)
 		ai_texas_swig.destruktorInt(wskaznikDoPamieci);

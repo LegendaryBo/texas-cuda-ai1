@@ -69,7 +69,7 @@ public class TexasObjectiveFunction implements
 			osobniki_java[i] = generator.lista.get( i );
 		}
 		
-		generator_gier = new GeneratorLiczbLosowychSpodJava();
+		
 		generator_individuali = new SimpleIndividualGenerator(games_, LICZBA_GENOW, osobniki_java);
 	}
 	
@@ -124,12 +124,13 @@ public class TexasObjectiveFunction implements
 	public static int licznik = 0;
 
 	public static boolean LOGI=false;
-	
+	static int randomSeed=53;
 	/**
 	 * po prostu rozgrywa podana liczbe parti i zwraca sumaryczny bilans
 	 */
 	public double evaluate(EvBinaryVectorIndividual individual) {
 
+	    generator_gier = new GeneratorLiczbLosowychSpodJava(randomSeed);
 		licznik++;
 		// System.out.println(iter);
 
@@ -146,7 +147,9 @@ public class TexasObjectiveFunction implements
 						trudnosc,
 						uzyjPoprzednichGeneracji);
 		}
-
+		generator_individuali.reset(randomSeed);
+		randomSeed++;
+		
 		if (resetRandomow) {
 
 			generator_kolejnosci = new Random();
@@ -200,7 +203,7 @@ public class TexasObjectiveFunction implements
 //			System.out.println(nr_rozdania);
 //			if (trudnosc<0)
 //				nr_rozdania = i;
-				
+//			System.out.println("nr rozdania w javie: "+nr_rozdania);
 			Gra gra = new Gra(gracze, nr_rozdania);
 			gra.play_round(false);
 //			System.out.println(gra.rozdanie.toString());

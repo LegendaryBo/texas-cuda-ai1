@@ -22,6 +22,7 @@ extern void destruktorHand(Hand *ptr);
 
 extern void rozegrajNGier(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_osobnikow);
 extern void rozegrajNGierCUDA(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
+extern void rozegrajNGierCUDAwithSeed(int ktory_nasz, int **osobniki, float *wynik, int N, int liczba_intow, int liczba_watkow, int liczba_osobnikow, int initNumber);
 extern int **getIndividualPTRPTR(int size);
 extern void setIndividualPTR(int *osobnik, int **pointer, int index);
 
@@ -109,6 +110,7 @@ extern void destruktorHand(Hand *IN);
 
 extern void rozegrajNGier(int ktory_nasz, int **IN, float *INOUT, int N, int liczba_intow, int liczba_osobnikow);
 extern void rozegrajNGierCUDA(int ktory_nasz, int **IN, float *INOUT, int n, int liczba_intow, int liczba_watkow, int liczba_osobnikow);
+extern void rozegrajNGierCUDAwithSeed(int ktory_nasz, int **IN, float *INOUT, int n, int liczba_intow, int liczba_watkow, int liczba_osobnikow, int initNumber);
 extern int **getIndividualPTRPTR(int size);
 extern void setIndividualPTR(int *IN, int **IN, int index);
 
