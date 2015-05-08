@@ -1,0 +1,1 @@
+The goal of the project is to develop simple AI Texas Hold'em player using evolutionary algorithm's and NVIDIA CUDA in order to speed up calculations
